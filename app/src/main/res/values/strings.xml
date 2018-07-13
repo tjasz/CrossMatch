@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CrossMatch</string>
+    <string name="last_tile">Last Tile:</string>
 </resources>
