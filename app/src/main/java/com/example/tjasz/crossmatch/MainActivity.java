@@ -2,6 +2,7 @@ package com.example.tjasz.crossmatch;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
     public class ButtonAdapter extends BaseAdapter {
-        private Context mContext;
+        private MainActivity mActivity;
 
         // Gets the context so it can be used later
-        public ButtonAdapter(Context c) {
-            mContext = c;
+        public ButtonAdapter(MainActivity c) {
+            mActivity = c;
         }
 
         // Total number of things contained within the adapter
@@ -59,15 +60,17 @@ public class MainActivity extends AppCompatActivity {
             Button btn;
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
-                btn = new Button(mContext);
+                btn = new Button(mActivity);
                 btn.setPadding(8, 8, 8, 8);
             }
             else {
                 btn = (Button) convertView;
             }
-            btn.setText("?");
-            // filenames is an array of strings
-            btn.setTextColor(Color.WHITE);
+            btn.setTextColor(CategoryDisplay.first_dim_to_color(
+                    mActivity.game_board.get_cell_first_category(position)));
+            btn.setText(Character.toString(CategoryDisplay.second_dim_to_char(
+                    mActivity.game_board.get_cell_second_category(position))));
+            btn.setTypeface(null, Typeface.BOLD);
             btn.setId(position);
 
             return btn;
