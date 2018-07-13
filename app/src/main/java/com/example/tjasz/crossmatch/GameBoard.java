@@ -53,9 +53,8 @@ public class GameBoard {
     // effectively mapping from the spatial grid to the categorical grid
     private ArrayList<Integer> category_assignments;
 
-    public void init_game(int new_size)
+    public void init_game()
     {
-        set_size(new_size);
         // initialize all cells to unclaimed to begin
         cell_states.clear();
         category_assignments.clear();
@@ -67,6 +66,21 @@ public class GameBoard {
         }
         // shuffle the mapping of spatial grid onto the categorical grid
         java.util.Collections.shuffle(category_assignments);
+
+        // set the number of moves to 0
+        moves_ = 0;
+    }
+
+    public void init_game(int new_size)
+    {
+        set_size(new_size);
+        init_game();
+    }
+
+    public static boolean is_edge(int position)
+    {
+        return (position / size() == 0) || (position / size() == size() - 1) ||
+               (position % size() == 0) || (position % size() == size() - 1);
     }
 
     // get the state of a cell
@@ -139,5 +153,20 @@ public class GameBoard {
             throw new RuntimeException("Second dimension index out of range.");
         }
         return category_assignments.get(first_dim*size()+second_dim);
+    }
+
+
+    private int moves_;
+    public boolean is_player_one_turn()
+    {
+        return moves_ % 2 == 0;
+    }
+    public boolean is_player_two_turn()
+    {
+        return !is_player_one_turn();
+    }
+    public boolean is_fresh_board()
+    {
+        return moves_ == 0;
     }
 }

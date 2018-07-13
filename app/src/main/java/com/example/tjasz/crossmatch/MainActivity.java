@@ -1,7 +1,5 @@
 package com.example.tjasz.crossmatch;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +12,7 @@ import android.widget.GridView;
 public class MainActivity extends AppCompatActivity {
 
     private GridView gameboard_gridview;
+    private Button new_game_button;
 
     private GameBoard game_board;
 
@@ -24,9 +23,37 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         gameboard_gridview = findViewById(R.id.gameboard_gridview);
         gameboard_gridview.setNumColumns(game_board.size());
         gameboard_gridview.setAdapter(new ButtonAdapter(this));
+
+        new_game_button = findViewById(R.id.newgame_button);
+        new_game_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new_game();
+            }
+        });
+    }
+
+    private void new_game()
+    {
+        game_board.init_game();
+        update_display();
+    }
+
+    private void update_display()
+    {
+        ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
+        /*for (int i = 0; i < adapter.getCount(); ++i)
+        {
+            Button btn = adapter.getItem(i);
+            btn.setTextColor(CategoryDisplay.first_dim_to_color(
+                    game_board.get_cell_first_category(i)));
+            btn.setText(Character.toString(CategoryDisplay.second_dim_to_char(
+                    game_board.get_cell_second_category(i))));
+        }*/
+        adapter.notifyDataSetChanged();
     }
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
@@ -44,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Require for structure, not really used in my code.
-        public Object getItem(int position) {
+        public Button getItem(int position) {
             return null;
         }
 
@@ -72,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
                     mActivity.game_board.get_cell_second_category(position))));
             btn.setTypeface(null, Typeface.BOLD);
             btn.setId(position);
+            // determine if button is enabled/disabled on a fresh game board
+            if (mActivity.game_board.is_fresh_board())
+            {
+                if (GameBoard.is_edge(position))
+                {
+                    btn.setEnabled(true);
+                }
+                else
+                {
+                    btn.setEnabled(false);
+                }
+            }
 
             return btn;
         }
