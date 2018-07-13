@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private void update_display()
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
+        TextView last_tile_text = findViewById(R.id.last_tile_box);
+        last_tile_text.setTextColor(CategoryDisplay.first_dim_to_color(
+                game_board.get_cell_first_category(game_board.get_last_tile())));
+        last_tile_text.setText(Character.toString(CategoryDisplay.second_dim_to_char(
+                game_board.get_cell_second_category(game_board.get_last_tile()))));
         adapter.notifyDataSetChanged();
     }
 
