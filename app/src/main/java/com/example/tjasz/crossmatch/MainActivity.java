@@ -1,5 +1,6 @@
 package com.example.tjasz.crossmatch;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,10 +48,17 @@ public class MainActivity extends AppCompatActivity {
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         TextView last_tile_text = findViewById(R.id.last_tile_box);
-        last_tile_text.setTextColor(CategoryDisplay.first_dim_to_color(
-                game_board.get_cell_first_category(game_board.get_last_tile())));
-        last_tile_text.setText(Character.toString(CategoryDisplay.second_dim_to_char(
-                game_board.get_cell_second_category(game_board.get_last_tile()))));
+        if (game_board.is_fresh_board())
+        {
+            last_tile_text.setText("-");
+            last_tile_text.setTextColor(Color.BLACK);
+        }
+        else {
+            last_tile_text.setTextColor(CategoryDisplay.first_dim_to_color(
+                    game_board.get_cell_first_category(game_board.get_last_tile())));
+            last_tile_text.setText(Character.toString(CategoryDisplay.second_dim_to_char(
+                    game_board.get_cell_second_category(game_board.get_last_tile()))));
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -110,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     mActivity.game_board.play(position);
+                    update_display();
+                    // TODO get opponent move asynchronously
+                    mActivity.game_board.play(Opponent.get_move(mActivity.game_board));
                     update_display();
                 }
             });
