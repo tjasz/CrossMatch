@@ -124,6 +124,21 @@ public class MainActivity extends AppCompatActivity {
                     update_display();
                 }
             });
+            // set background color based on cell state
+            // TODO map these with CategoryDisplay?
+            GameBoard.CellState cell_state = mActivity.game_board.get_cell_state(position);
+            if (cell_state == GameBoard.CellState.Unclaimed)
+            {
+                btn.setBackgroundColor(Color.GRAY);
+            }
+            else if (cell_state == GameBoard.CellState.PlayerOne)
+            {
+                btn.setBackgroundColor(Color.BLACK);
+            }
+            else if (cell_state == GameBoard.CellState.PlayerTwo)
+            {
+                btn.setBackgroundColor(Color.WHITE);
+            }
 
             return btn;
         }

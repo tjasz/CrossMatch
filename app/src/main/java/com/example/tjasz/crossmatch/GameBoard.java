@@ -162,15 +162,16 @@ public class GameBoard {
         {
             throw new RuntimeException("Index out of range.");
         }
+        if (get_cell_state(index) != CellState.Unclaimed)
+        {
+            return false;
+        }
         if (is_fresh_board())
         {
             return is_edge(index);
         }
-        else
-        {
-            return get_cell_first_category(index) == get_cell_first_category(get_last_tile()) ||
-                   get_cell_second_category(index) == get_cell_second_category(get_last_tile());
-        }
+        return get_cell_first_category(index) == get_cell_first_category(get_last_tile()) ||
+                get_cell_second_category(index) == get_cell_second_category(get_last_tile());
     }
 
 
@@ -201,6 +202,14 @@ public class GameBoard {
             throw new RuntimeException("Index out of range.");
         }
         moves_++;
+        if (is_player_one_turn())
+        {
+            cell_states.set(index, CellState.PlayerOne);
+        }
+        else
+        {
+            cell_states.set(index, CellState.PlayerTwo);
+        }
         last_tile_ = index;
     }
 }
