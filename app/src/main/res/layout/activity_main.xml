@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/last_tile_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/last_tile"
+        />
+
+    <TextView
+        android:id="@+id/last_tile_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/last_tile_label"
         />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,6 +31,7 @@
         android:horizontalSpacing="10dp"
         android:stretchMode="none"
         android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/last_tile_label"
         />
 
     <Button
@@ -29,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-
+        android:text="@string/new_game"
+        app:layout_constraintBottom_toBottomOf="@id/main_layout"
         />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
