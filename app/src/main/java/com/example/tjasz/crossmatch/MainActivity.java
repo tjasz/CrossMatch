@@ -45,14 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private void update_display()
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
-        /*for (int i = 0; i < adapter.getCount(); ++i)
-        {
-            Button btn = adapter.getItem(i);
-            btn.setTextColor(CategoryDisplay.first_dim_to_color(
-                    game_board.get_cell_first_category(i)));
-            btn.setText(Character.toString(CategoryDisplay.second_dim_to_char(
-                    game_board.get_cell_second_category(i))));
-        }*/
         adapter.notifyDataSetChanged();
     }
 
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             return position;
         }
 
-        public View getView(int position,
+        public View getView(final int position,
                             View convertView, ViewGroup parent) {
             Button btn;
             if (convertView == null) {
@@ -99,18 +91,22 @@ public class MainActivity extends AppCompatActivity {
                     mActivity.game_board.get_cell_second_category(position))));
             btn.setTypeface(null, Typeface.BOLD);
             btn.setId(position);
-            // determine if button is enabled/disabled on a fresh game board
-            if (mActivity.game_board.is_fresh_board())
+            // determine if button is enabled
+            if (mActivity.game_board.is_player_one_turn() &&
+                mActivity.game_board.is_valid_move(position))
             {
-                if (GameBoard.is_edge(position))
-                {
-                    btn.setEnabled(true);
-                }
-                else
-                {
-                    btn.setEnabled(false);
-                }
+                btn.setEnabled(true);
             }
+            else
+            {
+                btn.setEnabled(false);
+            }
+            btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    mActivity.game_board.play(position);
+                    update_display();
+                }
+            });
 
             return btn;
         }

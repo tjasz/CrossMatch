@@ -69,6 +69,7 @@ public class GameBoard {
 
         // set the number of moves to 0
         moves_ = 0;
+        last_tile_ = -1;
     }
 
     public void init_game(int new_size)
@@ -155,6 +156,23 @@ public class GameBoard {
         return category_assignments.get(first_dim*size()+second_dim);
     }
 
+    public boolean is_valid_move(int index)
+    {
+        if (index < 0 || index >= size()*size())
+        {
+            throw new RuntimeException("Index out of range.");
+        }
+        if (is_fresh_board())
+        {
+            return is_edge(index);
+        }
+        else
+        {
+            return get_cell_first_category(index) == get_cell_first_category(get_last_tile()) ||
+                   get_cell_second_category(index) == get_cell_second_category(get_last_tile());
+        }
+    }
+
 
     private int moves_;
     public boolean is_player_one_turn()
@@ -168,5 +186,21 @@ public class GameBoard {
     public boolean is_fresh_board()
     {
         return moves_ == 0;
+    }
+
+    private int last_tile_;
+    public int get_last_tile()
+    {
+        return last_tile_;
+    }
+
+    public void play(int index)
+    {
+        if (index < 0 || index >= size()*size())
+        {
+            throw new RuntimeException("Index out of range.");
+        }
+        moves_++;
+        last_tile_ = index;
     }
 }
