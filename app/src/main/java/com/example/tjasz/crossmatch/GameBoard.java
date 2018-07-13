@@ -1,5 +1,7 @@
 package com.example.tjasz.crossmatch;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class GameBoard {
@@ -36,6 +38,22 @@ public class GameBoard {
             throw new RuntimeException("An attempt to set a non-positive board size was observed.");
         }
     }
+    private static int larger_factor()
+    {
+        int upper_bound = (int) Math.ceil(Math.sqrt(size()));
+        for (int candidate = upper_bound; candidate > 1; candidate--)
+        {
+            if (candidate * (size() / candidate) == size())
+            {
+                return candidate;
+            }
+        }
+        return size();
+    }
+    private static int smaller_factor()
+    {
+        return size() / larger_factor();
+    }
 
     public static enum CellState
     {
@@ -70,6 +88,7 @@ public class GameBoard {
         // set the number of moves to 0
         moves_ = 0;
         last_tile_ = -1;
+        game_over_ = false;
     }
 
     public void init_game(int new_size)
@@ -162,6 +181,10 @@ public class GameBoard {
         {
             throw new RuntimeException("Index out of range.");
         }
+        if (game_over())
+        {
+            return false;
+        }
         if (get_cell_state(index) != CellState.Unclaimed)
         {
             return false;
@@ -176,6 +199,7 @@ public class GameBoard {
 
 
     private int moves_;
+    private boolean game_over_;
     public boolean is_player_one_turn()
     {
         return moves_ % 2 == 0;
@@ -187,6 +211,160 @@ public class GameBoard {
     public boolean is_fresh_board()
     {
         return moves_ == 0;
+    }
+    // helper to check if all of size() given status are equal and not unclaimed
+    private int length_of_unblocked_sequence(ArrayList<CellState> states)
+    {
+        if (states.size() != size())
+        {
+            throw new RuntimeException("Size of states list given to unblocked_sequence() is incorrect.");
+        }
+
+        int seq_len = 0;
+        CellState first_seen_player = CellState.Unclaimed;
+        for (int i = 0; i < states.size(); i++)
+        {
+            if (states.get(i) != CellState.Unclaimed)
+            {
+                if (first_seen_player == CellState.Unclaimed)
+                {
+                    first_seen_player = states.get(i);
+                }
+
+                if (first_seen_player == states.get(i))
+                {
+                    seq_len++;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        return seq_len;
+    }
+    public boolean game_over()
+    {
+        return game_over_;
+    }
+    private boolean determine_game_over()
+    {
+        // game is over if no legal moves are left
+        int moves_left = 0;
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            if (is_valid_move(i))
+            {
+                moves_left++;
+            }
+        }
+        if (moves_left == 0)
+        {
+            Log.d("GAMVEOVER","No moves left");
+            return true;
+        }
+        // game is also over if any rows are wholly claimed by a single player
+        for (int row = 0; row < size(); row++)
+        {
+            ArrayList<CellState> row_states = new ArrayList<>();
+            for (int cell = 0; cell < size(); cell++)
+            {
+                row_states.add(get_cell_state(row, cell));
+            }
+            if (length_of_unblocked_sequence(row_states) == size())
+            {
+                Log.d("GAMVEOVER","Row " + Integer.toString(row) + " claimed");
+                return true;
+            }
+        }
+        // game is also over if any columns are wholly claimed by a single player
+        for (int col = 0; col < size(); col++)
+        {
+            ArrayList<CellState> col_states = new ArrayList<>();
+            for (int cell = 0; cell < size(); cell++)
+            {
+                col_states.add(get_cell_state(cell, col));
+            }
+            if (length_of_unblocked_sequence(col_states) == size())
+            {
+                Log.d("GAMVEOVER","Column " + Integer.toString(col) + " claimed");
+                return true;
+            }
+        }
+        // game is also over if the positive diagonal is wholly claimed by a single player
+        ArrayList<CellState> diag_states = new ArrayList<>();
+        for (int col = 0; col < size(); col++)
+        {
+            diag_states.add(get_cell_state(col, col));
+        }
+        if (length_of_unblocked_sequence(diag_states) == size())
+        {
+            Log.d("GAMVEOVER","Positive diagonal claimed");
+            return true;
+        }
+        // game is also over if the negative diagonal is wholly claimed by a single player
+        diag_states.clear();
+        for (int col = 0; col < size(); col++)
+        {
+            diag_states.add(get_cell_state(col, size()-col-1));
+        }
+        if (length_of_unblocked_sequence(diag_states) == size())
+        {
+            Log.d("GAMVEOVER","Negative diagonal claimed");
+            return true;
+        }
+        // game is also over if any of the
+        // larger_factor() by smaller_factor() clusters are wholly claimed by a single player
+        for (int row = 0; row <= size() - smaller_factor(); row++)
+        {
+            for (int col = 0; col <= size() - larger_factor(); col++)
+            {
+                ArrayList<CellState> cluster_states = new ArrayList<>();
+                for (int i = 0; i < smaller_factor(); i++)
+                {
+                    for (int j = 0; j < larger_factor(); j++)
+                    {
+                        cluster_states.add(get_cell_state(row+i, col+j));
+                    }
+                }
+                if (length_of_unblocked_sequence(cluster_states) == size())
+                {
+                    Log.d("GAMVEOVER","Cluster of size " +
+                            Integer.toString(larger_factor()) + " by " +
+                            Integer.toString(smaller_factor()) + " at (" +
+                            Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
+                    return true;
+                }
+            }
+        }
+        // when size() is not an even square, game is also over if any of the
+        // smaller_factor() by larger_factor() clusters are wholly claimed by a single player
+        if (larger_factor() != smaller_factor())
+        {
+            for (int row = 0; row <= size() - larger_factor(); row++)
+            {
+                for (int col = 0; col <= size() - smaller_factor(); col++)
+                {
+                    ArrayList<CellState> cluster_states = new ArrayList<>();
+                    for (int i = 0; i < larger_factor(); i++)
+                    {
+                        for (int j = 0; j < smaller_factor(); j++)
+                        {
+                            cluster_states.add(get_cell_state(row+i, col+j));
+                        }
+                    }
+                    if (length_of_unblocked_sequence(cluster_states) == size())
+                    {
+                        Log.d("GAMVEOVER","Cluster of size " +
+                                Integer.toString(smaller_factor()) + " by " +
+                                Integer.toString(larger_factor()) + " at (" +
+                                Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private int last_tile_;
@@ -211,5 +389,6 @@ public class GameBoard {
             cell_states.set(index, CellState.PlayerTwo);
         }
         last_tile_ = index;
+        game_over_ = determine_game_over();
     }
 }

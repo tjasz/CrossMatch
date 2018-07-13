@@ -48,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         TextView last_tile_text = findViewById(R.id.last_tile_box);
-        if (game_board.is_fresh_board())
+        if (game_board.game_over())
+        {
+            last_tile_text.setText("Game Over!");
+        }
+        else if (game_board.is_fresh_board())
         {
             last_tile_text.setText("-");
             last_tile_text.setTextColor(Color.BLACK);
