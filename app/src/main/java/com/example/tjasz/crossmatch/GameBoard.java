@@ -220,6 +220,10 @@ public class GameBoard {
     {
         return moves_ == 0;
     }
+    public int unclaimed_tiles()
+    {
+        return size()*size() - moves_;
+    }
     // helper to check if all of size() given status are equal and not unclaimed
     private int length_of_unblocked_sequence(ArrayList<CellState> states)
     {
