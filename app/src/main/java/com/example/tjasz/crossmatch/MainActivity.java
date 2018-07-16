@@ -15,8 +15,9 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private GridView gameboard_gridview;
-    private Button new_game_button;
     private ProgressBar progress_bar;
+    private TextView game_status_textview;
+    private Button new_game_button;
 
     private GameBoard game_board;
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        game_status_textview = findViewById(R.id.game_status_textview);
 
         gameboard_gridview = findViewById(R.id.gameboard_gridview);
         gameboard_gridview.setNumColumns(game_board.size());
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     public void update_display()
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
-        TextView game_status_textview = findViewById(R.id.game_status_textview);
         if (game_board.game_over())
         {
             if (game_board.is_player_one_turn()) {
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
         progress_bar.setVisibility(View.INVISIBLE);
+        game_status_textview.setVisibility(View.VISIBLE);
     }
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!mActivity.game_board.game_over())
                     {
                         progress_bar.setVisibility(View.VISIBLE);
+                        game_status_textview.setVisibility(View.INVISIBLE);
                         new GetOpponentMoveTask(MainActivity.this).execute();
                     }
                 }

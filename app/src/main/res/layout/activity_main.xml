@@ -16,15 +16,16 @@
         android:text="@string/last_tile"
         android:textSize="32sp"
         android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/main_layout"
         />
 
     <ProgressBar
         android:id="@+id/loading_wheel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:indeterminate="true"
-        app:layout_constraintTop_toBottomOf="@id/gameboard_gridview"
+        app:layout_constraintTop_toTopOf="@id/main_layout"
         />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
