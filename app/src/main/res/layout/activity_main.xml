@@ -18,6 +18,15 @@
         android:gravity="center"
         />
 
+    <ProgressBar
+        android:id="@+id/loading_wheel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true"
+        app:layout_constraintTop_toBottomOf="@id/gameboard_gridview"
+        />
+
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gameboard_gridview"
         android:layout_width="match_parent"

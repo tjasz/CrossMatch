@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private GridView gameboard_gridview;
     private Button new_game_button;
+    private ProgressBar progress_bar;
 
     private GameBoard game_board;
 
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                 new_game();
             }
         });
+
+        progress_bar = (ProgressBar) findViewById(R.id.loading_wheel);
+
         update_display();
     }
 
@@ -77,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     game_board.get_cell_first_category(game_board.get_last_tile())));
         }
         adapter.notifyDataSetChanged();
+        progress_bar.setVisibility(View.INVISIBLE);
     }
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
@@ -139,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     // TODO get opponent move asynchronously
                     if (!mActivity.game_board.game_over())
                     {
+                        progress_bar.setVisibility(View.VISIBLE);
                         new GetOpponentMoveTask(MainActivity.this).execute();
                     }
                 }
