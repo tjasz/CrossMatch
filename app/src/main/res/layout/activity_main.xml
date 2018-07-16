@@ -9,18 +9,10 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/last_tile_label"
+        android:id="@+id/game_status_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/last_tile"
-        />
-
-    <TextView
-        android:id="@+id/last_tile_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@id/last_tile_label"
         />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,7 +24,7 @@
         android:horizontalSpacing="10dp"
         android:stretchMode="none"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/last_tile_label"
+        app:layout_constraintTop_toBottomOf="@id/game_status_textview"
         />
 
     <Button

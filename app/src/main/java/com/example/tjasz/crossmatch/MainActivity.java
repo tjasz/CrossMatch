@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         game_board = new GameBoard();
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 new_game();
             }
         });
+        update_display();
     }
 
     private void new_game()
@@ -47,21 +47,29 @@ public class MainActivity extends AppCompatActivity {
     private void update_display()
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
-        TextView last_tile_text = findViewById(R.id.last_tile_box);
+        TextView game_status_textview = findViewById(R.id.game_status_textview);
         if (game_board.game_over())
         {
-            last_tile_text.setText("Game Over!");
+            if (game_board.is_player_one_turn()) {
+                game_status_textview.setText(R.string.you_lose);
+            }
+            else {
+                game_status_textview.setText(R.string.you_win);
+            }
+            game_status_textview.setTextColor(Color.BLACK);
         }
         else if (game_board.is_fresh_board())
         {
-            last_tile_text.setText("-");
-            last_tile_text.setTextColor(Color.BLACK);
+            game_status_textview.setText(getString(R.string.last_tile) + "-");
+            game_status_textview.setTextColor(Color.BLACK);
         }
         else {
-            last_tile_text.setTextColor(CategoryDisplay.first_dim_to_color(
+            char last_tile_char = CategoryDisplay.second_dim_to_char(
+                    game_board.get_cell_second_category(game_board.get_last_tile()));
+            game_status_textview.setText(getString(R.string.last_tile) +
+                    Character.toString(last_tile_char));
+            game_status_textview.setTextColor(CategoryDisplay.first_dim_to_color(
                     game_board.get_cell_first_category(game_board.get_last_tile())));
-            last_tile_text.setText(Character.toString(CategoryDisplay.second_dim_to_char(
-                    game_board.get_cell_second_category(game_board.get_last_tile()))));
         }
         adapter.notifyDataSetChanged();
     }
