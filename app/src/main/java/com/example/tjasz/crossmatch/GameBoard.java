@@ -15,6 +15,14 @@ public class GameBoard {
     public GameBoard(GameBoard source)
     {
         this(source.size());
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            cell_states.set(i, source.cell_states.get(i));
+            category_assignments.set(i, source.category_assignments.get(i));
+        }
+        moves_ = source.moves_;
+        game_over_ = source.game_over_;
+        last_tile_ = source.last_tile_;
     }
     public GameBoard()
     {
