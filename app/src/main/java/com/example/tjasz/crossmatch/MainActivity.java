@@ -124,8 +124,11 @@ public class MainActivity extends AppCompatActivity {
                     mActivity.game_board.play(position);
                     update_display();
                     // TODO get opponent move asynchronously
-                    mActivity.game_board.play(Opponent.get_move(mActivity.game_board));
-                    update_display();
+                    if (!mActivity.game_board.game_over())
+                    {
+                        mActivity.game_board.play(Opponent.get_move(mActivity.game_board));
+                        update_display();
+                    }
                 }
             });
             // set background color based on cell state
