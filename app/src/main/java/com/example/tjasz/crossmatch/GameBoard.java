@@ -250,15 +250,15 @@ public class GameBoard {
     private boolean determine_game_over()
     {
         // game is over if no legal moves are left
-        int moves_left = 0;
+        int current_legal_moves = 0;
         for (int i = 0; i < size()*size(); ++i)
         {
             if (is_valid_move(i))
             {
-                moves_left++;
+                current_legal_moves++;
             }
         }
-        if (moves_left == 0)
+        if (current_legal_moves == 0)
         {
             Log.d("GAMVEOVER","No moves left");
             return true;
