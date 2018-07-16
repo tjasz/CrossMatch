@@ -38,9 +38,9 @@ public class GameBoard {
             throw new RuntimeException("An attempt to set a non-positive board size was observed.");
         }
     }
-    private static int larger_factor()
+    private static int smaller_factor()
     {
-        int upper_bound = (int) Math.ceil(Math.sqrt(size()));
+        int upper_bound = (int) Math.floor(Math.sqrt(size()));
         for (int candidate = upper_bound; candidate > 1; candidate--)
         {
             if (candidate * (size() / candidate) == size())
@@ -48,11 +48,11 @@ public class GameBoard {
                 return candidate;
             }
         }
-        return size();
+        return 1;
     }
-    private static int smaller_factor()
+    private static int larger_factor()
     {
-        return size() / larger_factor();
+        return size() / smaller_factor();
     }
 
     public static enum CellState
