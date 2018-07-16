@@ -315,51 +315,43 @@ public class GameBoard {
         }
         // game is also over if any of the
         // larger_factor() by smaller_factor() clusters are wholly claimed by a single player
-        for (int row = 0; row <= size() - smaller_factor(); row++)
-        {
-            for (int col = 0; col <= size() - larger_factor(); col++)
-            {
-                ArrayList<CellState> cluster_states = new ArrayList<>();
-                for (int i = 0; i < smaller_factor(); i++)
-                {
-                    for (int j = 0; j < larger_factor(); j++)
-                    {
-                        cluster_states.add(get_cell_state(row+i, col+j));
-                    }
-                }
-                if (length_of_unblocked_sequence(cluster_states) == size())
-                {
-                    Log.d("GAMVEOVER","Cluster of size " +
-                            Integer.toString(larger_factor()) + " by " +
-                            Integer.toString(smaller_factor()) + " at (" +
-                            Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
-                    return true;
-                }
-            }
-        }
-        // when size() is not an even square, game is also over if any of the
-        // smaller_factor() by larger_factor() clusters are wholly claimed by a single player
-        if (larger_factor() != smaller_factor())
-        {
-            for (int row = 0; row <= size() - larger_factor(); row++)
-            {
-                for (int col = 0; col <= size() - smaller_factor(); col++)
-                {
+        // do not check when size() is prime, as the clusters would be equivalent to rows/columns
+        if (smaller_factor() != 1) {
+            for (int row = 0; row <= size() - smaller_factor(); row++) {
+                for (int col = 0; col <= size() - larger_factor(); col++) {
                     ArrayList<CellState> cluster_states = new ArrayList<>();
-                    for (int i = 0; i < larger_factor(); i++)
-                    {
-                        for (int j = 0; j < smaller_factor(); j++)
-                        {
-                            cluster_states.add(get_cell_state(row+i, col+j));
+                    for (int i = 0; i < smaller_factor(); i++) {
+                        for (int j = 0; j < larger_factor(); j++) {
+                            cluster_states.add(get_cell_state(row + i, col + j));
                         }
                     }
-                    if (length_of_unblocked_sequence(cluster_states) == size())
-                    {
-                        Log.d("GAMVEOVER","Cluster of size " +
-                                Integer.toString(smaller_factor()) + " by " +
-                                Integer.toString(larger_factor()) + " at (" +
+                    if (length_of_unblocked_sequence(cluster_states) == size()) {
+                        Log.d("GAMVEOVER", "Cluster of size " +
+                                Integer.toString(larger_factor()) + " by " +
+                                Integer.toString(smaller_factor()) + " at (" +
                                 Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
                         return true;
+                    }
+                }
+            }
+            // when size() is not an even square, game is also over if any of the
+            // smaller_factor() by larger_factor() clusters are wholly claimed by a single player
+            if (larger_factor() != smaller_factor()) {
+                for (int row = 0; row <= size() - larger_factor(); row++) {
+                    for (int col = 0; col <= size() - smaller_factor(); col++) {
+                        ArrayList<CellState> cluster_states = new ArrayList<>();
+                        for (int i = 0; i < larger_factor(); i++) {
+                            for (int j = 0; j < smaller_factor(); j++) {
+                                cluster_states.add(get_cell_state(row + i, col + j));
+                            }
+                        }
+                        if (length_of_unblocked_sequence(cluster_states) == size()) {
+                            Log.d("GAMVEOVER", "Cluster of size " +
+                                    Integer.toString(smaller_factor()) + " by " +
+                                    Integer.toString(larger_factor()) + " at (" +
+                                    Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
+                            return true;
+                        }
                     }
                 }
             }
