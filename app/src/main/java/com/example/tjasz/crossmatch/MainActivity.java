@@ -18,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     private GameBoard game_board;
 
+    public GameBoard get_game_board()
+    {
+        return game_board;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         game_board = new GameBoard();
@@ -44,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         update_display();
     }
 
-    private void update_display()
+    public void update_display()
     {
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         TextView game_status_textview = findViewById(R.id.game_status_textview);
@@ -134,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     // TODO get opponent move asynchronously
                     if (!mActivity.game_board.game_over())
                     {
-                        mActivity.game_board.play(Opponent.get_move(mActivity.game_board));
-                        update_display();
+                        new GetOpponentMoveTask(MainActivity.this).execute();
                     }
                 }
             });
