@@ -54,7 +54,7 @@ public class Opponent {
                     copy.play(i);
                     v = Math.max(v, alphabeta(copy, depth-1, alpha, beta, !maximize));
                     alpha = Math.max(alpha, v);
-                    if (alpha >= beta)
+                    if (alpha > beta)
                     {
                         break;
                     }
@@ -74,7 +74,7 @@ public class Opponent {
                     copy.play(i);
                     v = Math.min(v, alphabeta(copy, depth-1, alpha, beta, !maximize));
                     beta = Math.min(beta, v);
-                    if (alpha >= beta)
+                    if (alpha > beta)
                     {
                         break;
                     }
