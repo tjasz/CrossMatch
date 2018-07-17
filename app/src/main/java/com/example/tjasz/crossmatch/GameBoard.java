@@ -10,6 +10,7 @@ public class GameBoard {
     {
         cell_states = new ArrayList<>();
         category_assignments = new ArrayList<>();
+        sequence_length_counts = new ArrayList<>();
         init_game(size);
     }
     public GameBoard(GameBoard source)
@@ -208,6 +209,7 @@ public class GameBoard {
 
     private int moves_;
     private boolean game_over_;
+    public ArrayList<Integer> sequence_length_counts;
     public boolean is_player_one_turn()
     {
         return moves_ % 2 == 0;
@@ -224,7 +226,9 @@ public class GameBoard {
     {
         return size()*size() - moves_;
     }
-    // helper to check if all of size() given status are equal and not unclaimed
+    // helper to check how many tiles in a cluster are claimed by one player, with the others unclaimed
+    // these are unblocked potential wins
+    // negative values for player one; positive for player two
     private int length_of_unblocked_sequence(ArrayList<CellState> states)
     {
         if (states.size() != size())
@@ -253,6 +257,10 @@ public class GameBoard {
                 }
             }
         }
+        if (first_seen_player == CellState.PlayerOne)
+        {
+            seq_len = -seq_len;
+        }
         return seq_len;
     }
     public boolean game_over()
@@ -275,6 +283,16 @@ public class GameBoard {
             Log.d("GAMEOVER","No moves left");
             return true;
         }
+
+        int current_seq_len;
+        // the sequence length counts give the counts of unblocked segments of length
+        // -size(), -size()+1, ... -1, 0, 1, ... size()-1, size()
+        // only gets fully populated when game is not over
+        sequence_length_counts.clear();
+        for (int i = 0; i < 2*size() + 1; i++)
+        {
+            sequence_length_counts.add(0);
+        }
         // game is also over if any rows are wholly claimed by a single player
         for (int row = 0; row < size(); row++)
         {
@@ -283,7 +301,9 @@ public class GameBoard {
             {
                 row_states.add(get_cell_state(row, cell));
             }
-            if (length_of_unblocked_sequence(row_states) == size())
+            current_seq_len = length_of_unblocked_sequence(row_states);
+            sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
+            if (Math.abs(current_seq_len) == size())
             {
                 Log.d("GAMEOVER","Row " + Integer.toString(row) + " claimed");
                 return true;
@@ -297,7 +317,9 @@ public class GameBoard {
             {
                 col_states.add(get_cell_state(cell, col));
             }
-            if (length_of_unblocked_sequence(col_states) == size())
+            current_seq_len = length_of_unblocked_sequence(col_states);
+            sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
+            if (Math.abs(current_seq_len) == size())
             {
                 Log.d("GAMEOVER","Column " + Integer.toString(col) + " claimed");
                 return true;
@@ -309,7 +331,9 @@ public class GameBoard {
         {
             diag_states.add(get_cell_state(col, col));
         }
-        if (length_of_unblocked_sequence(diag_states) == size())
+        current_seq_len = length_of_unblocked_sequence(diag_states);
+        sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
+        if (Math.abs(current_seq_len) == size())
         {
             Log.d("GAMEOVER","Positive diagonal claimed");
             return true;
@@ -320,7 +344,9 @@ public class GameBoard {
         {
             diag_states.add(get_cell_state(col, size()-col-1));
         }
-        if (length_of_unblocked_sequence(diag_states) == size())
+        current_seq_len = length_of_unblocked_sequence(diag_states);
+        sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
+        if (Math.abs(current_seq_len) == size())
         {
             Log.d("GAMEOVER","Negative diagonal claimed");
             return true;
@@ -337,7 +363,10 @@ public class GameBoard {
                             cluster_states.add(get_cell_state(row + i, col + j));
                         }
                     }
-                    if (length_of_unblocked_sequence(cluster_states) == size()) {
+                    current_seq_len = length_of_unblocked_sequence(cluster_states);
+                    sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
+                    if (Math.abs(current_seq_len) == size())
+                    {
                         Log.d("GAMEOVER", "Cluster of size " +
                                 Integer.toString(larger_factor()) + " by " +
                                 Integer.toString(smaller_factor()) + " at (" +
@@ -357,7 +386,10 @@ public class GameBoard {
                                 cluster_states.add(get_cell_state(row + i, col + j));
                             }
                         }
-                        if (length_of_unblocked_sequence(cluster_states) == size()) {
+                        current_seq_len = length_of_unblocked_sequence(cluster_states);
+                        sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
+                        if (Math.abs(current_seq_len) == size())
+                        {
                             Log.d("GAMEOVER", "Cluster of size " +
                                     Integer.toString(smaller_factor()) + " by " +
                                     Integer.toString(larger_factor()) + " at (" +

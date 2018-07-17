@@ -1,5 +1,7 @@
 package com.example.tjasz.crossmatch;
 
+import android.util.Log;
+
 import java.io.PipedOutputStream;
 
 public class Opponent {
@@ -38,7 +40,9 @@ public class Opponent {
     {
         if (depth == 0 || board.game_over())
         {
-            return get_board_value(board);
+            double val = get_board_value(board);
+            Log.d("BOARD_VALUE", Double.toString(val));
+            return val;
         }
 
         double v;
@@ -95,7 +99,20 @@ public class Opponent {
             // player 1 won - negative value
             return -1.0 * board.unclaimed_tiles();
         }
-        // TODO add heuristic evaluation here
+        // heuristic evaluation based on longest unblocked clusters
+        for (int seq_len = board.size() - 1; seq_len > 0; seq_len--)
+        {
+            // if player one has an unblocked sequence at this size, return a corresponding fractional value
+            if (board.sequence_length_counts.get(-seq_len+board.size()) > 0)
+            {
+                return -seq_len/( (double) board.size());
+            }
+            // same for player two (Opponent, positive)
+            if (board.sequence_length_counts.get(seq_len+board.size()) > 0)
+            {
+                return seq_len/( (double) board.size());
+            }
+        }
         return 0;
     }
 }
