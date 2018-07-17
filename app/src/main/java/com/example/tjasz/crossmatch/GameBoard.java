@@ -272,7 +272,7 @@ public class GameBoard {
         }
         if (current_legal_moves == 0)
         {
-            Log.d("GAMVEOVER","No moves left");
+            Log.d("GAMEOVER","No moves left");
             return true;
         }
         // game is also over if any rows are wholly claimed by a single player
@@ -285,7 +285,7 @@ public class GameBoard {
             }
             if (length_of_unblocked_sequence(row_states) == size())
             {
-                Log.d("GAMVEOVER","Row " + Integer.toString(row) + " claimed");
+                Log.d("GAMEOVER","Row " + Integer.toString(row) + " claimed");
                 return true;
             }
         }
@@ -299,7 +299,7 @@ public class GameBoard {
             }
             if (length_of_unblocked_sequence(col_states) == size())
             {
-                Log.d("GAMVEOVER","Column " + Integer.toString(col) + " claimed");
+                Log.d("GAMEOVER","Column " + Integer.toString(col) + " claimed");
                 return true;
             }
         }
@@ -311,7 +311,7 @@ public class GameBoard {
         }
         if (length_of_unblocked_sequence(diag_states) == size())
         {
-            Log.d("GAMVEOVER","Positive diagonal claimed");
+            Log.d("GAMEOVER","Positive diagonal claimed");
             return true;
         }
         // game is also over if the negative diagonal is wholly claimed by a single player
@@ -322,7 +322,7 @@ public class GameBoard {
         }
         if (length_of_unblocked_sequence(diag_states) == size())
         {
-            Log.d("GAMVEOVER","Negative diagonal claimed");
+            Log.d("GAMEOVER","Negative diagonal claimed");
             return true;
         }
         // game is also over if any of the
@@ -338,7 +338,7 @@ public class GameBoard {
                         }
                     }
                     if (length_of_unblocked_sequence(cluster_states) == size()) {
-                        Log.d("GAMVEOVER", "Cluster of size " +
+                        Log.d("GAMEOVER", "Cluster of size " +
                                 Integer.toString(larger_factor()) + " by " +
                                 Integer.toString(smaller_factor()) + " at (" +
                                 Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
@@ -358,7 +358,7 @@ public class GameBoard {
                             }
                         }
                         if (length_of_unblocked_sequence(cluster_states) == size()) {
-                            Log.d("GAMVEOVER", "Cluster of size " +
+                            Log.d("GAMEOVER", "Cluster of size " +
                                     Integer.toString(smaller_factor()) + " by " +
                                     Integer.toString(larger_factor()) + " at (" +
                                     Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
