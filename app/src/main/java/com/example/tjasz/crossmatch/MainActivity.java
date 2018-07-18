@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void update_display()
     {
+        new_game_button.setEnabled(false); // disable button unless game is over
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         if (game_board.game_over())
         {
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 game_status_textview.setText(R.string.you_win);
             }
             game_status_textview.setTextColor(Color.BLACK);
+            new_game_button.setEnabled(true); // if game is over, can start a new one
         }
         else if (game_board.is_fresh_board())
         {
