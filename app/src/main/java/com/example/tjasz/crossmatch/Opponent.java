@@ -103,15 +103,15 @@ public class Opponent {
         int total_seq_lens = 0;
         for (int seq_len = board.size() - 1; seq_len > 0; seq_len--)
         {
-            // if player one has an unblocked sequence at this size, return a corresponding fractional value
+            // if player one has an unblocked sequence at this size, add a corresponding fractional value
             if (board.sequence_length_counts.get(-seq_len+board.size()) > 0)
             {
-                total_seq_lens += -seq_len*seq_len;
+                total_seq_lens += -Math.pow(seq_len, 4);
             }
             // same for player two (Opponent, positive)
             if (board.sequence_length_counts.get(seq_len+board.size()) > 0)
             {
-                total_seq_lens += seq_len*seq_len;
+                total_seq_lens += -Math.pow(seq_len, 4);
             }
         }
         return total_seq_lens/( (double) board.size()*board.size()*board.num_clusters());
