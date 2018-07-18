@@ -63,6 +63,13 @@ public class GameBoard {
     {
         return size() / smaller_factor();
     }
+    public static int num_clusters()
+    {
+        return 2*size() + // rows, columns
+                2 + // diagonals
+                (smaller_factor() == 1 ? 0 : (size()-smaller_factor()+1)*(size()-larger_factor()+1)) + // larger_factor() by smaller_factor() clusters
+                (smaller_factor() == larger_factor() ? 0 : (size()-larger_factor()+1)*(size()-smaller_factor()+1)); // smaller_factor() by larger_factor() clusters
+    }
 
     public static enum CellState
     {

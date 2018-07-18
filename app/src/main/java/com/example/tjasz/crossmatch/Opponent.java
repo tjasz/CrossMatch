@@ -41,7 +41,7 @@ public class Opponent {
         if (depth == 0 || board.game_over())
         {
             double val = get_board_value(board);
-            Log.d("BOARD_VALUE", Double.toString(val));
+            // Log.d("BOARD_VALUE", Double.toString(val));
             return val;
         }
 
@@ -100,19 +100,20 @@ public class Opponent {
             return -1.0 * board.unclaimed_tiles();
         }
         // heuristic evaluation based on longest unblocked clusters
+        int total_seq_lens = 0;
         for (int seq_len = board.size() - 1; seq_len > 0; seq_len--)
         {
             // if player one has an unblocked sequence at this size, return a corresponding fractional value
             if (board.sequence_length_counts.get(-seq_len+board.size()) > 0)
             {
-                return -seq_len/( (double) board.size());
+                total_seq_lens += -seq_len*seq_len;
             }
             // same for player two (Opponent, positive)
             if (board.sequence_length_counts.get(seq_len+board.size()) > 0)
             {
-                return seq_len/( (double) board.size());
+                total_seq_lens += seq_len*seq_len;
             }
         }
-        return 0;
+        return total_seq_lens/( (double) board.size()*board.size()*board.num_clusters());
     }
 }
