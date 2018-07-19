@@ -422,7 +422,6 @@ public class GameBoard {
         {
             throw new RuntimeException("Index out of range.");
         }
-        moves_++;
         if (is_player_one_turn())
         {
             cell_states.set(index, CellState.PlayerOne);
@@ -431,6 +430,7 @@ public class GameBoard {
         {
             cell_states.set(index, CellState.PlayerTwo);
         }
+        moves_++;
         last_tile_ = index;
         game_over_ = determine_game_over();
     }
