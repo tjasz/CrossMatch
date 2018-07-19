@@ -159,17 +159,39 @@ public class MainActivity extends AppCompatActivity {
             // set background color based on cell state
             // TODO map these with CategoryDisplay?
             GameBoard.CellState cell_state = mActivity.game_board.get_cell_state(position);
+            // set the style of the tile based on state and enabled/disabled
             if (cell_state == GameBoard.CellState.Unclaimed)
             {
-                btn.setBackgroundColor(Color.GRAY);
+                if (btn.isEnabled())
+                {
+                    btn.setBackgroundResource(R.drawable.tile_unclaimed_enabled);
+                }
+                else
+                {
+                    btn.setBackgroundResource(R.drawable.tile_unclaimed_disabled);
+                }
             }
             else if (cell_state == GameBoard.CellState.PlayerOne)
             {
-                btn.setBackgroundColor(Color.BLACK);
+                if (position == mActivity.game_board.get_last_tile())
+                {
+                    btn.setBackgroundResource(R.drawable.tile_claimed_p1_highlighted);
+                }
+                else
+                {
+                    btn.setBackgroundResource(R.drawable.tile_claimed_p1);
+                }
             }
             else if (cell_state == GameBoard.CellState.PlayerTwo)
             {
-                btn.setBackgroundColor(Color.WHITE);
+                if (position == mActivity.game_board.get_last_tile())
+                {
+                    btn.setBackgroundResource(R.drawable.tile_claimed_p2_highlighted);
+                }
+                else
+                {
+                    btn.setBackgroundResource(R.drawable.tile_claimed_p2);
+                }
             }
 
             return btn;
