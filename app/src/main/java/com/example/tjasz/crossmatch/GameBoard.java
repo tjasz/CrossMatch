@@ -31,7 +31,7 @@ public class GameBoard {
     }
 
     // manage the positive size of the square game board
-    private static final int default_size = 6;
+    private static final int default_size = 4;
     private static int size_;
     public static int size()
     {
