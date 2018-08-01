@@ -3,5 +3,6 @@
     <string name="last_tile">Last Tile:\u0020</string>
     <string name="you_lose">You Lose.</string>
     <string name="you_win">You Win!</string>
+    <string name="draw">Draw Game..</string>
     <string name="new_game">New Game</string>
 </resources>

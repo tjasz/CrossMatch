@@ -61,14 +61,22 @@ public class MainActivity extends AppCompatActivity {
     {
         new_game_button.setEnabled(false); // disable button unless game is over
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
+        switch (game_board.game_state())
+        {
+            case InProgress:
+                break;
+            case PlayerOneWon:
+                game_status_textview.setText(R.string.you_win);
+                break;
+            case PlayerTwoWon:
+                game_status_textview.setText(R.string.you_lose);
+                break;
+            case Draw:
+                game_status_textview.setText(R.string.draw);
+                break;
+        }
         if (game_board.game_over())
         {
-            if (game_board.is_player_one_turn()) {
-                game_status_textview.setText(R.string.you_lose);
-            }
-            else {
-                game_status_textview.setText(R.string.you_win);
-            }
             game_status_textview.setTextColor(Color.BLACK);
             new_game_button.setEnabled(true); // if game is over, can start a new one
         }
