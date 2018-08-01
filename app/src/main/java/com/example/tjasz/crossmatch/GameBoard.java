@@ -22,7 +22,7 @@ public class GameBoard {
             category_assignments.set(i, source.category_assignments.get(i));
         }
         moves_ = source.moves_;
-        game_over_ = source.game_over_;
+        game_state_ = source.game_state_;
         last_tile_ = source.last_tile_;
     }
     public GameBoard()
@@ -71,6 +71,14 @@ public class GameBoard {
                 (smaller_factor() == larger_factor() ? 0 : (size()-larger_factor()+1)*(size()-smaller_factor()+1)); // smaller_factor() by larger_factor() clusters
     }
 
+    public static enum GameState
+    {
+        InProgress,
+        PlayerOneWon,
+        PlayerTwoWon,
+        Draw
+    }
+
     public static enum CellState
     {
         Unclaimed,
@@ -104,7 +112,7 @@ public class GameBoard {
         // set the number of moves to 0
         moves_ = 0;
         last_tile_ = -1;
-        game_over_ = false;
+        game_state_ = GameState.InProgress;
     }
 
     public void init_game(int new_size)
@@ -215,7 +223,7 @@ public class GameBoard {
 
 
     private int moves_;
-    private boolean game_over_;
+    private GameState game_state_;
     public ArrayList<Integer> sequence_length_counts;
     public boolean is_player_one_turn()
     {
@@ -272,24 +280,14 @@ public class GameBoard {
     }
     public boolean game_over()
     {
-        return game_over_;
+        return game_state() != GameState.InProgress;
     }
-    private boolean determine_game_over()
+    public GameState game_state()
     {
-        // game is over if no legal moves are left
-        int current_legal_moves = 0;
-        for (int i = 0; i < size()*size(); ++i)
-        {
-            if (is_valid_move(i))
-            {
-                current_legal_moves++;
-            }
-        }
-        if (current_legal_moves == 0)
-        {
-            Log.d("GAMEOVER","No moves left");
-            return true;
-        }
+        return game_state_;
+    }
+    private GameState determine_game_state()
+    {
 
         int current_seq_len;
         // the sequence length counts give the counts of unblocked segments of length
@@ -310,10 +308,15 @@ public class GameBoard {
             }
             current_seq_len = length_of_unblocked_sequence(row_states);
             sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
-            if (Math.abs(current_seq_len) == size())
+            if (current_seq_len == -size())
             {
-                Log.d("GAMEOVER","Row " + Integer.toString(row) + " claimed");
-                return true;
+                Log.d("GAMEOVER","Row " + Integer.toString(row) + " claimed by player one");
+                return GameState.PlayerOneWon;
+            }
+            if (current_seq_len == size())
+            {
+                Log.d("GAMEOVER","Row " + Integer.toString(row) + " claimed by player two");
+                return GameState.PlayerTwoWon;
             }
         }
         // game is also over if any columns are wholly claimed by a single player
@@ -326,10 +329,15 @@ public class GameBoard {
             }
             current_seq_len = length_of_unblocked_sequence(col_states);
             sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
-            if (Math.abs(current_seq_len) == size())
+            if (current_seq_len == -size())
             {
-                Log.d("GAMEOVER","Column " + Integer.toString(col) + " claimed");
-                return true;
+                Log.d("GAMEOVER","Column " + Integer.toString(col) + " claimed by player one");
+                return GameState.PlayerOneWon;
+            }
+            if (current_seq_len == size())
+            {
+                Log.d("GAMEOVER","Column " + Integer.toString(col) + " claimed by player two");
+                return GameState.PlayerTwoWon;
             }
         }
         // game is also over if the positive diagonal is wholly claimed by a single player
@@ -340,10 +348,15 @@ public class GameBoard {
         }
         current_seq_len = length_of_unblocked_sequence(diag_states);
         sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
-        if (Math.abs(current_seq_len) == size())
+        if (current_seq_len == -size())
         {
-            Log.d("GAMEOVER","Positive diagonal claimed");
-            return true;
+            Log.d("GAMEOVER","Positive diagonal claimed by player one");
+            return GameState.PlayerOneWon;
+        }
+        if (current_seq_len == size())
+        {
+            Log.d("GAMEOVER","Positive diagonal claimed by player two");
+            return GameState.PlayerTwoWon;
         }
         // game is also over if the negative diagonal is wholly claimed by a single player
         diag_states.clear();
@@ -353,10 +366,15 @@ public class GameBoard {
         }
         current_seq_len = length_of_unblocked_sequence(diag_states);
         sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
-        if (Math.abs(current_seq_len) == size())
+        if (current_seq_len == -size())
         {
-            Log.d("GAMEOVER","Negative diagonal claimed");
-            return true;
+            Log.d("GAMEOVER","Negative diagonal claimed by player one");
+            return GameState.PlayerOneWon;
+        }
+        if (current_seq_len == size())
+        {
+            Log.d("GAMEOVER","Negative diagonal claimed by player two");
+            return GameState.PlayerTwoWon;
         }
         // game is also over if any of the
         // larger_factor() by smaller_factor() clusters are wholly claimed by a single player
@@ -372,13 +390,21 @@ public class GameBoard {
                     }
                     current_seq_len = length_of_unblocked_sequence(cluster_states);
                     sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
-                    if (Math.abs(current_seq_len) == size())
+                    if (current_seq_len == -size())
                     {
                         Log.d("GAMEOVER", "Cluster of size " +
                                 Integer.toString(larger_factor()) + " by " +
                                 Integer.toString(smaller_factor()) + " at (" +
-                                Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
-                        return true;
+                                Integer.toString(row) + ", " + Integer.toString(col) + ") claimed by player one");
+                        return GameState.PlayerOneWon;
+                    }
+                    if (current_seq_len == size())
+                    {
+                        Log.d("GAMEOVER", "Cluster of size " +
+                                Integer.toString(larger_factor()) + " by " +
+                                Integer.toString(smaller_factor()) + " at (" +
+                                Integer.toString(row) + ", " + Integer.toString(col) + ") claimed by player two");
+                        return GameState.PlayerTwoWon;
                     }
                 }
             }
@@ -395,19 +421,54 @@ public class GameBoard {
                         }
                         current_seq_len = length_of_unblocked_sequence(cluster_states);
                         sequence_length_counts.set(current_seq_len + size(), sequence_length_counts.get(current_seq_len + size())+1);
-                        if (Math.abs(current_seq_len) == size())
+                        if (current_seq_len == -size())
                         {
                             Log.d("GAMEOVER", "Cluster of size " +
                                     Integer.toString(smaller_factor()) + " by " +
                                     Integer.toString(larger_factor()) + " at (" +
                                     Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
-                            return true;
+                            return GameState.PlayerOneWon;
+                        }
+                        if (current_seq_len == size())
+                        {
+                            Log.d("GAMEOVER", "Cluster of size " +
+                                    Integer.toString(smaller_factor()) + " by " +
+                                    Integer.toString(larger_factor()) + " at (" +
+                                    Integer.toString(row) + ", " + Integer.toString(col) + ") claimed");
+                            return GameState.PlayerTwoWon;
                         }
                     }
                 }
             }
         }
-        return false;
+
+        // game is over if no legal moves are left
+        int current_legal_moves = 0;
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            if (is_valid_move(i))
+            {
+                current_legal_moves++;
+            }
+        }
+        if (current_legal_moves == 0)
+        {
+            Log.d("GAMEOVER","No moves left");
+            if (unclaimed_tiles() > 0)
+            {
+                if (is_player_two_turn())
+                {
+                    return GameState.PlayerOneWon;
+                }
+                else
+                {
+                    return GameState.PlayerTwoWon;
+                }
+            }
+            return GameState.Draw;
+        }
+
+        return GameState.InProgress;
     }
 
     private int last_tile_;
@@ -432,6 +493,6 @@ public class GameBoard {
         }
         moves_++;
         last_tile_ = index;
-        game_over_ = determine_game_over();
+        game_state_ = determine_game_state();
     }
 }
