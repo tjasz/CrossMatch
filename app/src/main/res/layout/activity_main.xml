@@ -35,9 +35,10 @@
         android:columnWidth="50dp"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
-        android:stretchMode="none"
+        android:stretchMode="columnWidth"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/game_status_textview"
+        android:layout_margin="10dp"
         />
 
     <Button
