@@ -126,14 +126,14 @@ public class MainActivity extends AppCompatActivity {
 
         public View getView(final int position,
                             View convertView, ViewGroup parent) {
-            Button btn;
+            SquareButton btn;
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
-                btn = new Button(mActivity);
+                btn = new SquareButton(mActivity);
                 btn.setPadding(8, 8, 8, 8);
             }
             else {
-                btn = (Button) convertView;
+                btn = (SquareButton) convertView;
             }
             btn.setTextColor(CategoryDisplay.first_dim_to_color(
                     mActivity.game_board.get_cell_first_category(position)));
