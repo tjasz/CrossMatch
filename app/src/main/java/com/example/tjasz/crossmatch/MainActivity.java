@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         progress_bar = (ProgressBar) findViewById(R.id.loading_wheel);
 
-        update_display();
+        NewGameDialog new_game_dialog = new NewGameDialog(MainActivity.this);
+        new_game_dialog.show();
     }
 
     public void set_board_size_and_start_game(int x)
