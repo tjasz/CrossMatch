@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         new_game_button = findViewById(R.id.newgame_button);
         new_game_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new_game();
+                NewGameDialog new_game_dialog = new NewGameDialog(MainActivity.this);
+                new_game_dialog.show();
             }
         });
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         update_display();
     }
 
-    private void new_game()
+    public void new_game()
     {
         game_board.init_game();
         update_display();
