@@ -31,6 +31,8 @@ public class GameBoard {
     }
 
     // manage the positive size of the square game board
+    public static final int min_size = 2;
+    public static final int max_size = CategoryDisplay.MAX_COLORS;
     public static final int default_size = 4;
     private static int size_;
     public static int size()
