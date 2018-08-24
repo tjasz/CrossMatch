@@ -3,6 +3,9 @@ package com.example.tjasz.crossmatch;
 import android.graphics.Color;
 
 public class CategoryDisplay {
+    // TODO this max, array, and first function are useless
+    // MainActivity.first_dim_to_color() is used instead
+    // because accessing the color array resource requires context
     public static final int MAX_COLORS = 6;
     private static final int colors[] = {
             Color.RED,

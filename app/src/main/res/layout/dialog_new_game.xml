@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:max="2"
         />
-    <!-- range from 4 to 6 -->
 
     <Button
         android:id="@+id/start_button"
