@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         game_status_textview = findViewById(R.id.game_status_textview);
 
         gameboard_gridview = findViewById(R.id.gameboard_gridview);
-        gameboard_gridview.setNumColumns(game_board.size());
         gameboard_gridview.setAdapter(new ButtonAdapter(this));
 
         new_game_button = findViewById(R.id.newgame_button);
@@ -52,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         update_display();
     }
 
+    public void set_board_size_and_start_game(int x)
+    {
+        game_board.set_size(x);
+        new_game();
+    }
+
     public void new_game()
     {
         game_board.init_game();
@@ -60,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void update_display()
     {
+        gameboard_gridview.setNumColumns(game_board.size());
         new_game_button.setEnabled(false); // disable button unless game is over
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         switch (game_board.game_state())
