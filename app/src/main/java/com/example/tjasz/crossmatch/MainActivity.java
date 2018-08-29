@@ -53,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
         new_game_dialog.show();
     }
 
+    public int get_board_size()
+    {
+        return game_board.size();
+    }
+
     public void set_board_size_and_start_game(int x)
     {
         game_board.set_size(x);

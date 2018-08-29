@@ -25,6 +25,8 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         seekbar = (SeekBar) findViewById(R.id.boardsize_seekbar);
         int max_board_size = main_activity.getResources().obtainTypedArray(R.array.category_colors).length();
         seekbar.setMax(max_board_size - GameBoard.min_size);
+        seekbar.setProgress(main_activity.get_board_size() - GameBoard.min_size);
+        seekbar.refreshDrawableState();
 
         Button start = (Button) findViewById(R.id.start_button);
         start.setOnClickListener(this);
