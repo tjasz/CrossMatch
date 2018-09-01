@@ -120,6 +120,13 @@ public class MainActivity extends AppCompatActivity {
         game_status_textview.setVisibility(View.VISIBLE);
     }
 
+    private long last_opponent_decision_time;
+
+    public void set_last_opponent_decision_time(long millis)
+    {
+        last_opponent_decision_time = millis;
+    }
+
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
     public class ButtonAdapter extends BaseAdapter {
         private MainActivity mActivity;
