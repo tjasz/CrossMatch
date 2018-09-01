@@ -5,15 +5,14 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SeekBar;
+import android.widget.NumberPicker;
 
 public class NewGameDialog extends Dialog implements View.OnClickListener {
     public MainActivity main_activity;
-    private SeekBar seekbar;
+    private NumberPicker boardsize_getter;
 
     public NewGameDialog(MainActivity a) {
         super(a);
-        // TODO Auto-generated constructor stub
         main_activity = a;
     }
 
@@ -22,11 +21,13 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_new_game);
 
-        seekbar = (SeekBar) findViewById(R.id.boardsize_seekbar);
+        boardsize_getter = (NumberPicker) findViewById(R.id.boardsize_getter);
         int max_board_size = main_activity.getResources().obtainTypedArray(R.array.category_colors).length();
-        seekbar.setMax(max_board_size - GameBoard.min_size);
-        seekbar.setProgress(main_activity.get_board_size() - GameBoard.min_size);
-        seekbar.refreshDrawableState();
+        boardsize_getter.setMinValue(GameBoard.min_size);
+        boardsize_getter.setMaxValue(max_board_size);
+        boardsize_getter.setValue(main_activity.get_board_size());
+        boardsize_getter.setWrapSelectorWheel(false);
+        boardsize_getter.refreshDrawableState();
 
         Button start = (Button) findViewById(R.id.start_button);
         start.setOnClickListener(this);
@@ -37,7 +38,7 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_button:
-                main_activity.set_board_size_and_start_game(seekbar.getProgress()  + GameBoard.min_size);
+                main_activity.set_board_size_and_start_game(boardsize_getter.getValue());
                 dismiss();
                 break;
             default:

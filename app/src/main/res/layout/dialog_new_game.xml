@@ -11,11 +11,11 @@
         android:text="@string/boardsize_label"
         />
 
-    <SeekBar
-        android:id="@+id/boardsize_seekbar"
-        android:layout_width="100dp"
+    <NumberPicker
+        android:id="@+id/boardsize_getter"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:max="2"
+        android:descendantFocusability="blocksDescendants"
         />
 
     <Button
