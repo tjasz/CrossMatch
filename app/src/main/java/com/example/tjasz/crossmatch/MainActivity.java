@@ -145,8 +145,7 @@ public class MainActivity extends AppCompatActivity {
         // time is proportionate to branching_factor ^ depth
         // so t = k * b^d
         // solving for k: k = t / (b^d)
-        int max_branching_factor = 2*game_board.size() - 1;
-        opponent_decision_time_factor = millis / Math.pow(max_branching_factor, current_search_depth);
+        opponent_decision_time_factor = millis / Math.pow(game_board.max_branching_factor(), current_search_depth);
         Log.i("DECISION", "opponent_decision_time_factor: " + Double.toString(opponent_decision_time_factor));
     }
 
@@ -167,13 +166,12 @@ public class MainActivity extends AppCompatActivity {
         // time is proportionate to branching_factor ^ depth
         // so t = k * b^d
         // solving for depth: d = (ln t - ln k)/(ln b)
-        // TODO k can be factored out of these
+        // TODO k can be factored out of these; maybe not if branching factor varies, though
         // ln k = ln t - d ln b
         // so d_1 = (ln t_1 - ln t_0) / (ln b) + d_0
-        int max_branching_factor = 2*game_board.size() - 1;
 
         current_search_depth = (int) ((Math.log(target_opponent_decision_time) - Math.log(opponent_decision_time_factor))
-                / Math.log(max_branching_factor));
+                / Math.log(game_board.max_branching_factor()));
         Log.i("DECISION", "new search depth: " + Integer.toString(current_search_depth));
         return current_search_depth;
     }

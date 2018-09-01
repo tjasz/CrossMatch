@@ -243,6 +243,14 @@ public class GameBoard {
     {
         return size()*size() - moves_;
     }
+    public int max_branching_factor()
+    {
+        // each tile has 2*size() - 1 neighbors,
+        // but on any move except the first, at least one has been claimed already
+        // the branching factor is less than or equal to 2*size - 2
+        // but it must also be less than or equal to the total number of unclaimed tiles
+        return Math.min(unclaimed_tiles(), 2*size() - 2);
+    }
     // helper to check how many tiles in a cluster are claimed by one player, with the others unclaimed
     // these are unblocked potential wins
     // negative values for player one; positive for player two
