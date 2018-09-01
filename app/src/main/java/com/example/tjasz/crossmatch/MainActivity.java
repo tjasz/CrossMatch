@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     private int get_initial_search_depth()
     {
         double estimated_factor = 3;
-        current_search_depth = (int) ((Math.log(target_opponent_decision_time) - Math.log(estimated_factor))
+        current_search_depth = (int) Math.round((Math.log(target_opponent_decision_time) - Math.log(estimated_factor))
                 / Math.log(game_board.max_branching_factor()));
         return current_search_depth;
     }
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         // ln k = ln t - d ln b
         // so d_1 = (ln t_1 - ln t_0) / (ln b) + d_0
 
-        current_search_depth = (int) ((Math.log(target_opponent_decision_time) - Math.log(opponent_decision_time_factor))
+        current_search_depth = (int) Math.round((Math.log(target_opponent_decision_time) - Math.log(opponent_decision_time_factor))
                 / Math.log(game_board.max_branching_factor()));
         Log.i("DECISION", "new search depth: " + Integer.toString(current_search_depth));
         return current_search_depth;
