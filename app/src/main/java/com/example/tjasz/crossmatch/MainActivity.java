@@ -151,8 +151,10 @@ public class MainActivity extends AppCompatActivity {
 
     private int get_initial_search_depth()
     {
-        // TODO make it vary with board size, target time
-        return 3;
+        double estimated_factor = 3;
+        current_search_depth = (int) ((Math.log(target_opponent_decision_time) - Math.log(estimated_factor))
+                / Math.log(game_board.max_branching_factor()));
+        return current_search_depth;
     }
 
     public int get_search_depth()
