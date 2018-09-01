@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void new_game()
     {
+        // set the decision time factor to an invalid value
+        // use initial search depth until it can be based on data
+        opponent_decision_time_factor = -1.0;
         game_board.init_game();
         update_display();
     }
@@ -120,12 +124,51 @@ public class MainActivity extends AppCompatActivity {
         game_status_textview.setVisibility(View.VISIBLE);
     }
 
-    private long last_opponent_decision_time;
+    final private long target_opponent_decision_time = 2000;
+    private double opponent_decision_time_factor;
+    private int current_search_depth;
 
-    public void set_last_opponent_decision_time(long millis)
+    public void tell_opponent_decision_time(long millis)
     {
-        last_opponent_decision_time = millis;
+        Log.i("DECISION", "millis: " + Long.toString(millis));
+        Log.i("DECISION", "current_search_depth: " + Integer.toString(current_search_depth));
+        // time is proportionate to branching_factor ^ depth
+        // so t = k * b^d
+        // solving for k: k = t / (b^d)
+        int max_branching_factor = 2*game_board.size() - 1;
+        opponent_decision_time_factor = millis / Math.pow(max_branching_factor, current_search_depth);
+        Log.i("DECISION", "opponent_decision_time_factor: " + Double.toString(opponent_decision_time_factor));
     }
+
+    private int get_initial_search_depth()
+    {
+        // TODO make it vary with board size, target time
+        return 3;
+    }
+
+    public int get_search_depth()
+    {
+        // use initial search depth until it can be based on data
+        if (opponent_decision_time_factor < 0)
+        {
+            current_search_depth = get_initial_search_depth();
+            return current_search_depth;
+        }
+        // time is proportionate to branching_factor ^ depth
+        // so t = k * b^d
+        // solving for depth: d = (ln t - ln k)/(ln b)
+        // TODO k can be factored out of these
+        // ln k = ln t - d ln b
+        // so d_1 = (ln t_1 - ln t_0) / (ln b) + d_0
+        int max_branching_factor = 2*game_board.size() - 1;
+
+        current_search_depth = (int) ((Math.log(target_opponent_decision_time) - Math.log(opponent_decision_time_factor))
+                / Math.log(max_branching_factor));
+        Log.i("DECISION", "new search depth: " + Integer.toString(current_search_depth));
+        return current_search_depth;
+    }
+
+
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
     public class ButtonAdapter extends BaseAdapter {

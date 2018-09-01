@@ -5,7 +5,7 @@ import android.util.Log;
 import java.io.PipedOutputStream;
 
 public class Opponent {
-    public static int get_move(GameBoard board)
+    public static int get_move(GameBoard board, int depth)
     {
         if (!board.is_player_two_turn())
         {
@@ -23,7 +23,7 @@ public class Opponent {
                 GameBoard copy = new GameBoard(board);
                 copy.play(i);
                 // TODO parameterize depth
-                double value = alphabeta(copy, 3, max_value, Double.POSITIVE_INFINITY, false);
+                double value = alphabeta(copy, depth, max_value, Double.POSITIVE_INFINITY, false);
                 if (value >= max_value)
                 {
                     best_move = i;

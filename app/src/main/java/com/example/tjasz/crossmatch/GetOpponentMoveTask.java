@@ -22,7 +22,7 @@ public class GetOpponentMoveTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected Integer doInBackground(Void... nothing)
     {
-        return Opponent.get_move(activity_.get_game_board());
+        return Opponent.get_move(activity_.get_game_board(), activity_.get_search_depth());
     }
 
     @Override
@@ -30,6 +30,6 @@ public class GetOpponentMoveTask extends AsyncTask<Void, Void, Integer> {
     {
         activity_.get_game_board().play(move_index);
         activity_.update_display();
-        activity_.set_last_opponent_decision_time(Calendar.getInstance().getTimeInMillis() - start_time);
+        activity_.tell_opponent_decision_time(Calendar.getInstance().getTimeInMillis() - start_time);
     }
 }
