@@ -5,4 +5,5 @@
     <string name="you_win">You Win!</string>
     <string name="draw">Draw Game..</string>
     <string name="new_game">New Game</string>
+    <string name="boardsize_label">Board Size:</string>
 </resources>
