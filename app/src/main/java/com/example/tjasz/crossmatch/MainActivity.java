@@ -124,9 +124,19 @@ public class MainActivity extends AppCompatActivity {
         game_status_textview.setVisibility(View.VISIBLE);
     }
 
-    final private long target_opponent_decision_time = 2000;
+    private long target_opponent_decision_time = 2000;
     private double opponent_decision_time_factor;
     private int current_search_depth;
+
+    public void set_target_opponent_decision_time_seconds(int dectime)
+    {
+        target_opponent_decision_time = dectime*1000;
+    }
+
+    public int get_target_opponent_decision_time_seconds()
+    {
+        return (int) Math.round(target_opponent_decision_time / 1000.0);
+    }
 
     public void tell_opponent_decision_time(long millis)
     {

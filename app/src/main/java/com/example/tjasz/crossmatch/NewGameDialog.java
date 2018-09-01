@@ -10,6 +10,7 @@ import android.widget.NumberPicker;
 public class NewGameDialog extends Dialog implements View.OnClickListener {
     public MainActivity main_activity;
     private NumberPicker boardsize_getter;
+    private NumberPicker dectime_getter;
 
     public NewGameDialog(MainActivity a) {
         super(a);
@@ -29,6 +30,13 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         boardsize_getter.setWrapSelectorWheel(false);
         boardsize_getter.refreshDrawableState();
 
+        dectime_getter = (NumberPicker) findViewById(R.id.dectime_getter);
+        dectime_getter.setMinValue(1);
+        dectime_getter.setMaxValue(9);
+        dectime_getter.setValue(main_activity.get_target_opponent_decision_time_seconds());
+        dectime_getter.setWrapSelectorWheel(false);
+        dectime_getter.refreshDrawableState();
+
         Button start = (Button) findViewById(R.id.start_button);
         start.setOnClickListener(this);
 
@@ -39,6 +47,7 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.start_button:
                 main_activity.set_board_size_and_start_game(boardsize_getter.getValue());
+                main_activity.set_target_opponent_decision_time_seconds(dectime_getter.getValue());
                 dismiss();
                 break;
             default:

@@ -18,6 +18,20 @@
         android:descendantFocusability="blocksDescendants"
         />
 
+    <TextView
+        android:id="@+id/dectime_label"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/dectime_label"
+        />
+
+    <NumberPicker
+        android:id="@+id/dectime_getter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        />
+
     <Button
         android:id="@+id/start_button"
         android:layout_width="match_parent"
