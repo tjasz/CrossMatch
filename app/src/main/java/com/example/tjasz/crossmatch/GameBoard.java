@@ -239,6 +239,18 @@ public class GameBoard {
     {
         return moves_ == 0;
     }
+    public int current_legal_moves()
+    {
+        int count = 0;
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            if (is_valid_move(i))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
     public int unclaimed_tiles()
     {
         return size()*size() - moves_;
@@ -451,17 +463,7 @@ public class GameBoard {
                 }
             }
         }
-
-        // game is over if no legal moves are left
-        int current_legal_moves = 0;
-        for (int i = 0; i < size()*size(); ++i)
-        {
-            if (is_valid_move(i))
-            {
-                current_legal_moves++;
-            }
-        }
-        if (current_legal_moves == 0)
+        if (current_legal_moves() == 0)
         {
             Log.d("GAMEOVER","No moves left");
             if (unclaimed_tiles() > 0)
