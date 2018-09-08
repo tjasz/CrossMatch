@@ -89,17 +89,32 @@ public class Opponent {
     }
     private static double get_board_value(GameBoard board)
     {
+        // if game is over, return a value based on the winner
+        // and how long it took them to win
+        // alternative: base value only on winner, and not on number of moves
         if (board.game_over())
         {
-            // player 2 won - positive value
-            if (board.is_player_one_turn())
+            // player 2 won - positive value. > 1
+            if (board.game_state() == GameBoard.GameState.PlayerTwoWon)
             {
-                return board.unclaimed_tiles();
+                // return 1 + the number of unclaimed tiles
+                // adding one allows this to be a better outcome than a draw with value 0
+                return 1.0 * (1 + board.unclaimed_tiles());
             }
-            // player 1 won - negative value
-            return -1.0 * board.unclaimed_tiles();
+            // player 1 won - negative value. < -1
+            else if (board.game_state() == GameBoard.GameState.PlayerOneWon)
+            {
+                // return -1 * (1 + the number of unclaimed tiles)
+                // adding one allows this to be a worse outcome than a draw with value 0
+                return -1.0 * (1 + board.unclaimed_tiles());
+            }
+            // return 0 for a draw
+            return 0.0;
         }
-        // heuristic evaluation based on longest unblocked clusters
+        // if game is in progress:
+        // heuristic evaluation based on total unblocked clusters, weighted by length
+        // absolute value should be less than 1
+        // alternative: consider returning a value based on just the longest unblocked cluster
         int total_seq_lens = 0;
         for (int seq_len = board.size() - 1; seq_len > 0; seq_len--)
         {
