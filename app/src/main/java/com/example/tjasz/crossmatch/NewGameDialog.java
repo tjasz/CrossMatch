@@ -32,7 +32,15 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         String[] retval = new String[hi - lo + 1];
         for (int i = 0; i < retval.length; ++i)
         {
-            retval[i] = index_value_to_dec_time(i) + " sec";
+            int seconds = index_value_to_dec_time(i);
+            if (seconds >= 60)
+            {
+                retval[i] = seconds / 60 + "m " + seconds % 60 + "s";
+            }
+            else
+            {
+                retval[i] = index_value_to_dec_time(i) + " sec";
+            }
         }
         return retval;
     }
