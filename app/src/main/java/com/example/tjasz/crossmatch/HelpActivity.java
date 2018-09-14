@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -25,5 +26,9 @@ public class HelpActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void finishWrapper(View v) {
+        finish();
     }
 }

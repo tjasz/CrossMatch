@@ -17,4 +17,5 @@
         A player may also win by claiming a tile which cannot legally be followed.
         In other words, a tile that is the last of both its color and its number.
     </string>
+    <string name="help_done">OK</string>
 </resources>
