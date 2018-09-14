@@ -45,14 +45,7 @@ public class GameActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_edit_settings) {
-            // TODO launch settings activity and create mechanism for retrieving settings
-            // Intent intent = new Intent(GameActivity.this, SettingsActivity.class);
-            // startActivity(intent);
-            return true;
-        }
-        else if (id == R.id.action_help) {
+        if (id == R.id.action_help) {
             Intent intent = new Intent(GameActivity.this, HelpActivity.class);
             startActivity(intent);
             return true;
