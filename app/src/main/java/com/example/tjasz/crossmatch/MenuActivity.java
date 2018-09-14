@@ -14,6 +14,12 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
     }
 
+    public void go_to_help(View v)
+    {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
+    }
+
     public void go_to_game(View v)
     {
         Intent intent = new Intent(this, GameActivity.class);

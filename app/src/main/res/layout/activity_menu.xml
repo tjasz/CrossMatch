@@ -8,9 +8,19 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/button_play"
         android:text="@string/play"
         android:onClick="go_to_game"
         app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_help"
+        android:text="@string/action_help"
+        android:onClick="go_to_help"
+        app:layout_constraintBottom_toTopOf="@id/button_play"
         />
 
 </android.support.constraint.ConstraintLayout>
