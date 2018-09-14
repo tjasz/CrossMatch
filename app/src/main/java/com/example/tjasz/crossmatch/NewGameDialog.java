@@ -54,15 +54,15 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         int max_board_size = game_activity.getResources().obtainTypedArray(R.array.category_colors).length();
         boardsize_getter.setMinValue(GameBoard.min_size);
         boardsize_getter.setMaxValue(max_board_size);
-        boardsize_getter.setValue(game_activity.get_board_size());
+        boardsize_getter.setValue(Preferences.get_board_size(game_activity));
         boardsize_getter.setWrapSelectorWheel(false);
         boardsize_getter.refreshDrawableState();
 
         dectime_getter = (NumberPicker) findViewById(R.id.dectime_getter);
         dectime_getter.setMinValue(0);
         dectime_getter.setMaxValue(7);
-        dectime_getter.setValue(dec_time_to_index_value(
-                game_activity.get_target_opponent_decision_time_seconds()));
+        int dectime = Preferences.get_opponent_decision_time(game_activity);
+        dectime_getter.setValue(dec_time_to_index_value((int) Math.round(dectime/1000.0)));
         dectime_getter.setWrapSelectorWheel(false);
         dectime_getter.setDisplayedValues(range_to_displayed_values(
                 dectime_getter.getMinValue(),
@@ -78,9 +78,9 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_button:
-                game_activity.set_board_size_and_start_game(boardsize_getter.getValue());
-                game_activity.set_target_opponent_decision_time_seconds(
-                        index_value_to_dec_time(dectime_getter.getValue()));
+                Preferences.set_opponent_decision_time(game_activity, 1000*index_value_to_dec_time(dectime_getter.getValue()));
+                Preferences.set_board_size(game_activity, boardsize_getter.getValue());
+                game_activity.new_game();
                 dismiss();
                 break;
             default:

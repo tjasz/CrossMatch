@@ -94,17 +94,13 @@ public class GameActivity extends AppCompatActivity {
         return game_board.size();
     }
 
-    public void set_board_size_and_start_game(int x)
-    {
-        game_board.set_size(x);
-        new_game();
-    }
-
     public void new_game()
     {
         // set the decision time factor to an invalid value
         // use initial search depth until it can be based on data
         opponent_decision_time_factor = -1.0;
+        target_opponent_decision_time = Preferences.get_opponent_decision_time(this);
+        game_board.set_size(Preferences.get_board_size(this));
         game_board.init_game();
         update_display();
     }
@@ -160,16 +156,6 @@ public class GameActivity extends AppCompatActivity {
     private long target_opponent_decision_time = 2000;
     private double opponent_decision_time_factor;
     private int current_search_depth;
-
-    public void set_target_opponent_decision_time_seconds(int dectime)
-    {
-        target_opponent_decision_time = dectime*1000;
-    }
-
-    public int get_target_opponent_decision_time_seconds()
-    {
-        return (int) Math.round(target_opponent_decision_time / 1000.0);
-    }
 
     public void tell_opponent_decision_time(long millis)
     {
