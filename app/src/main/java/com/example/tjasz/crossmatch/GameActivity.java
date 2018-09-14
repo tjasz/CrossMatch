@@ -63,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        game_board = new GameBoard();
+        game_board = new GameBoard(Preferences.get_board_size(this));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
