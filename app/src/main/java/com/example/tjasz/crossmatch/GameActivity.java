@@ -76,8 +76,7 @@ public class GameActivity extends AppCompatActivity {
         new_game_button = findViewById(R.id.newgame_button);
         new_game_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                NewGameDialog new_game_dialog = new NewGameDialog(GameActivity.this);
-                new_game_dialog.show();
+                GameActivity.this.new_game();
             }
         });
 
@@ -85,8 +84,7 @@ public class GameActivity extends AppCompatActivity {
 
         update_display();
 
-        NewGameDialog new_game_dialog = new NewGameDialog(GameActivity.this);
-        new_game_dialog.show();
+        new_game();
     }
 
     public int get_board_size()
