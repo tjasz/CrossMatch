@@ -18,5 +18,6 @@
         In other words, a tile that is the last of both its color and its number.
     </string>
     <string name="help_done">OK</string>
+    <string name="settings_done">Done</string>
     <string name="play">Play</string>
 </resources>

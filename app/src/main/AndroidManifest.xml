@@ -17,6 +17,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.tjasz.crossmatch.MenuActivity" />
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MenuActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.tjasz.crossmatch.MenuActivity" />
+        </activity>
         <activity android:name=".HelpActivity"></activity>
         <activity
             android:name=".MenuActivity">
