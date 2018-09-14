@@ -7,6 +7,14 @@
     <string name="new_game">New Game</string>
     <string name="boardsize_label">Board Size:</string>
     <string name="dectime_label">Opponent Decision Time:</string>
+
     <string name="action_edit_settings">Settings</string>
     <string name="action_help">How to Play</string>
+    <string name="help_text">Player One begins by claiming a tile on the edge of the board.
+        Thereafter, players alternate claiming tiles.
+        The next tile claimed must match the previous claimed tile in either number or color.
+        A player wins by claiming all the tiles in a row, columns, diagonal, TODO square.
+        A player may also win by claiming a tile which cannot legally be followed.
+        In other words, a tile that is the last of both its color and its number.
+    </string>
 </resources>
