@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".MainActivity">
+    tools:context=".GameActivity">
 
     <TextView
         android:id="@+id/game_status_textview"

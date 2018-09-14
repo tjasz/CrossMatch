@@ -5,10 +5,10 @@ import android.os.AsyncTask;
 import java.util.Calendar;
 
 public class GetOpponentMoveTask extends AsyncTask<Void, Void, Integer> {
-    private MainActivity activity_;
+    private GameActivity activity_;
     long start_time;
 
-    public GetOpponentMoveTask(MainActivity activity)
+    public GetOpponentMoveTask(GameActivity activity)
     {
         activity_ = activity;
     }

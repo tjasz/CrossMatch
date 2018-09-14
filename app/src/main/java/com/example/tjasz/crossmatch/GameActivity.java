@@ -15,7 +15,7 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     private GridView gameboard_gridview;
     private ProgressBar progress_bar;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         new_game_button = findViewById(R.id.newgame_button);
         new_game_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                NewGameDialog new_game_dialog = new NewGameDialog(MainActivity.this);
+                NewGameDialog new_game_dialog = new NewGameDialog(GameActivity.this);
                 new_game_dialog.show();
             }
         });
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         update_display();
 
-        NewGameDialog new_game_dialog = new NewGameDialog(MainActivity.this);
+        NewGameDialog new_game_dialog = new NewGameDialog(GameActivity.this);
         new_game_dialog.show();
     }
 
@@ -190,10 +190,10 @@ public class MainActivity extends AppCompatActivity {
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/
     public class ButtonAdapter extends BaseAdapter {
-        private MainActivity mActivity;
+        private GameActivity mActivity;
 
         // Gets the context so it can be used later
-        public ButtonAdapter(MainActivity c) {
+        public ButtonAdapter(GameActivity c) {
             mActivity = c;
         }
 
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         progress_bar.setVisibility(View.VISIBLE);
                         game_status_textview.setVisibility(View.INVISIBLE);
-                        new GetOpponentMoveTask(MainActivity.this).execute();
+                        new GetOpponentMoveTask(GameActivity.this).execute();
                     }
                 }
             });

@@ -8,13 +8,13 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 public class NewGameDialog extends Dialog implements View.OnClickListener {
-    public MainActivity main_activity;
+    public GameActivity game_activity;
     private NumberPicker boardsize_getter;
     private NumberPicker dectime_getter;
 
-    public NewGameDialog(MainActivity a) {
+    public NewGameDialog(GameActivity a) {
         super(a);
-        main_activity = a;
+        game_activity = a;
     }
 
     private static int index_value_to_dec_time(int x)
@@ -51,10 +51,10 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.dialog_new_game);
 
         boardsize_getter = (NumberPicker) findViewById(R.id.boardsize_getter);
-        int max_board_size = main_activity.getResources().obtainTypedArray(R.array.category_colors).length();
+        int max_board_size = game_activity.getResources().obtainTypedArray(R.array.category_colors).length();
         boardsize_getter.setMinValue(GameBoard.min_size);
         boardsize_getter.setMaxValue(max_board_size);
-        boardsize_getter.setValue(main_activity.get_board_size());
+        boardsize_getter.setValue(game_activity.get_board_size());
         boardsize_getter.setWrapSelectorWheel(false);
         boardsize_getter.refreshDrawableState();
 
@@ -62,7 +62,7 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
         dectime_getter.setMinValue(0);
         dectime_getter.setMaxValue(7);
         dectime_getter.setValue(dec_time_to_index_value(
-                main_activity.get_target_opponent_decision_time_seconds()));
+                game_activity.get_target_opponent_decision_time_seconds()));
         dectime_getter.setWrapSelectorWheel(false);
         dectime_getter.setDisplayedValues(range_to_displayed_values(
                 dectime_getter.getMinValue(),
@@ -78,8 +78,8 @@ public class NewGameDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_button:
-                main_activity.set_board_size_and_start_game(boardsize_getter.getValue());
-                main_activity.set_target_opponent_decision_time_seconds(
+                game_activity.set_board_size_and_start_game(boardsize_getter.getValue());
+                game_activity.set_target_opponent_decision_time_seconds(
                         index_value_to_dec_time(dectime_getter.getValue()));
                 dismiss();
                 break;
