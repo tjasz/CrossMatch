@@ -5,12 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <NumberPicker
+        android:id="@+id/boardsize_getter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        />
+
+    <NumberPicker
+        android:id="@+id/dectime_getter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toRightOf="@id/boardsize_getter"
+        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_play"
         android:text="@string/play"
-        android:onClick="go_to_game"
+        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
@@ -19,7 +34,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/button_help"
         android:text="@string/action_help"
-        android:onClick="go_to_help"
+        android:onClick="onClick"
         app:layout_constraintBottom_toTopOf="@id/button_play"
         />
 
