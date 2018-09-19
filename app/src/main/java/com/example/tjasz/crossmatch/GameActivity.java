@@ -112,18 +112,34 @@ public class GameActivity extends AppCompatActivity {
             case InProgress:
                 break;
             case PlayerOneWon:
-                game_status_textview.setText(R.string.you_win);
+                game_status_textview.setTextColor(Color.WHITE);
+                if (Preferences.get_use_computer_opponent(this))
+                {
+                    game_status_textview.setText(R.string.you_win);
+                }
+                else
+                {
+                    game_status_textview.setText(R.string.p1_wins);
+                }
                 break;
             case PlayerTwoWon:
-                game_status_textview.setText(R.string.you_lose);
+                game_status_textview.setTextColor(Color.BLACK);
+                if (Preferences.get_use_computer_opponent(this))
+                {
+                    game_status_textview.setText(R.string.you_lose);
+                }
+                else
+                {
+                    game_status_textview.setText(R.string.p2_wins);
+                }
                 break;
             case Draw:
+                game_status_textview.setTextColor(Color.BLACK);
                 game_status_textview.setText(R.string.draw);
                 break;
         }
         if (game_board.game_over())
         {
-            game_status_textview.setTextColor(Color.BLACK);
             new_game_button.setEnabled(true); // if game is over, can start a new one
         }
         else if (game_board.is_fresh_board())
