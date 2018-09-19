@@ -25,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
     private Button new_game_button;
 
     private GameBoard game_board;
+    private boolean use_ai;
 
     public GameBoard get_game_board()
     {
@@ -90,6 +91,7 @@ public class GameActivity extends AppCompatActivity {
         // set the decision time factor to an invalid value
         // use initial search depth until it can be based on data
         opponent_decision_time_factor = -1.0;
+        use_ai = Preferences.get_use_computer_opponent(this);
         target_opponent_decision_time = Preferences.get_opponent_decision_time(this);
         game_board.set_size(Preferences.get_board_size(this));
         game_board.init_game();
@@ -113,7 +115,7 @@ public class GameActivity extends AppCompatActivity {
                 break;
             case PlayerOneWon:
                 game_status_textview.setTextColor(Color.WHITE);
-                if (Preferences.get_use_computer_opponent(this))
+                if (use_ai)
                 {
                     game_status_textview.setText(R.string.you_win);
                 }
@@ -124,7 +126,7 @@ public class GameActivity extends AppCompatActivity {
                 break;
             case PlayerTwoWon:
                 game_status_textview.setTextColor(Color.BLACK);
-                if (Preferences.get_use_computer_opponent(this))
+                if (use_ai)
                 {
                     game_status_textview.setText(R.string.you_lose);
                 }
@@ -263,7 +265,7 @@ public class GameActivity extends AppCompatActivity {
                     mActivity.game_board.play(position);
                     update_display();
                     // TODO get opponent move asynchronously
-                    if (!mActivity.game_board.game_over() && Preferences.get_use_computer_opponent(GameActivity.this))
+                    if (!mActivity.game_board.game_over() && use_ai)
                     {
                         progress_bar.setVisibility(View.VISIBLE);
                         game_status_textview.setVisibility(View.INVISIBLE);
