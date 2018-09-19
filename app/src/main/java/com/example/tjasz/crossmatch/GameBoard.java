@@ -30,6 +30,7 @@ public class GameBoard {
     public static final int min_size = 2;
     public static final int max_size = CategoryDisplay.MAX_COLORS;
     private static int size_;
+    private static int smaller_factor_ = -1;
     public static int size()
     {
         return size_;
@@ -46,11 +47,16 @@ public class GameBoard {
     }
     private static int smaller_factor()
     {
+        if (smaller_factor_ > 0)
+        {
+            return smaller_factor_;
+        }
         int upper_bound = (int) Math.floor(Math.sqrt(size()));
         for (int candidate = upper_bound; candidate > 1; candidate--)
         {
             if (candidate * (size() / candidate) == size())
             {
+                smaller_factor_ = candidate;
                 return candidate;
             }
         }
