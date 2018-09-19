@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.NumberPicker;
 
 public class SettingsActivity extends AppCompatActivity {
     private NumberPicker boardsize_getter;
     private NumberPicker dectime_getter;
+    private CheckBox use_ai_checkbox;
 
     private static int index_value_to_dec_time(int x)
     {
@@ -63,6 +65,8 @@ public class SettingsActivity extends AppCompatActivity {
                 dectime_getter.getMaxValue()));
         dectime_getter.refreshDrawableState();
 
+        use_ai_checkbox = (CheckBox) findViewById(R.id.use_ai_checkbox);
+        use_ai_checkbox.setChecked(Preferences.get_use_computer_opponent(this));
     }
 
     @Override
@@ -72,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
         Preferences.set_opponent_decision_time(this,
                 1000*index_value_to_dec_time(dectime_getter.getValue()));
         Preferences.set_board_size(this, boardsize_getter.getValue());
+        Preferences.set_use_computer_opponent(this, use_ai_checkbox.isChecked());
     }
 
     // TODO save settings when navigating up via home button or hardware back button

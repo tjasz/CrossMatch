@@ -20,6 +20,13 @@
         app:layout_constraintLeft_toRightOf="@id/boardsize_getter"
         />
 
+    <CheckBox
+        android:id="@+id/use_ai_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/dectime_getter"
+        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,5 +35,6 @@
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         />
+
 
 </android.support.constraint.ConstraintLayout>

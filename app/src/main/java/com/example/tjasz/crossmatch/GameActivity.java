@@ -234,8 +234,7 @@ public class GameActivity extends AppCompatActivity {
             btn.setTypeface(null, Typeface.BOLD);
             btn.setId(position);
             // determine if button is enabled
-            if (mActivity.game_board.is_player_one_turn() &&
-                mActivity.game_board.is_valid_move(position))
+            if (mActivity.game_board.is_valid_move(position))
             {
                 btn.setEnabled(true);
             }
@@ -248,7 +247,7 @@ public class GameActivity extends AppCompatActivity {
                     mActivity.game_board.play(position);
                     update_display();
                     // TODO get opponent move asynchronously
-                    if (!mActivity.game_board.game_over())
+                    if (!mActivity.game_board.game_over() && Preferences.get_use_computer_opponent(GameActivity.this))
                     {
                         progress_bar.setVisibility(View.VISIBLE);
                         game_status_textview.setVisibility(View.INVISIBLE);
