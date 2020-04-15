@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CrossMatch</string>
+    <string name="app_name">Tesserekt</string>
     <string name="last_tile">Last Tile:\u0020</string>
     <string name="you_lose">You Lose.</string>
     <string name="you_win">You Win!</string>
