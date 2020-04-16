@@ -11,15 +11,33 @@
     <string name="dectime_label">Opponent Decision Time:</string>
 
     <string name="action_edit_settings">Settings</string>
-    <string name="action_help">How to Play</string>
-    <string name="help_text">Player One begins by claiming a tile on the edge of the board.
-        Thereafter, players alternate claiming tiles.
-        The next tile claimed must match the previous claimed tile in either number or color.
-        A player wins by claiming all the tiles in a row, columns, diagonal, TODO square.
-        A player may also win by claiming a tile which cannot legally be followed.
-        In other words, a tile that is the last of both its color and its number.
-    </string>
-    <string name="help_done">OK</string>
     <string name="settings_done">Done</string>
     <string name="play">Play</string>
+
+
+    <string name="action_help">How to Play</string>
+    <string name="help_header_brief">Summary</string>
+    <string name="help_text_brief">Tesserekt is something like "Uno Tic-Tac-Toe"
+        on a slightly larger board.
+    </string>
+    <string name="help_header_begin">First Move</string>
+    <string name="help_text_begin">Start the game by tapping any tile
+        on the outer ring of the game board to claim it.
+    </string>
+    <string name="help_header_play">Game Play</string>
+    <string name="help_text_play">Players alternate turns claiming a tile for their own.
+        Only tiles that match either the color or the numeral of the tile claimed
+        during the previous turn are eligible to be claimed.
+    </string>
+    <string name="help_header_win">Winning</string>
+    <string name="help_text_win">A player wins by claiming all the tiles in a row, column,
+        diagonal, or 2x2 square of tiles.
+        A player may also win by claiming a tile which cannot legally be followed.
+    </string>
+    <string name="help_header_draw">Draw Game</string>
+    <string name="help_text_draw">A draw game is possible is all 16 tiles have been claimed,
+        but no single row, column, diagonal, or 2x2 square has been claimed wholly by any player.
+    </string>
+
+    <string name="help_done">OK</string>
 </resources>
