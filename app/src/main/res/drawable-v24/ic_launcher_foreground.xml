@@ -32,25 +32,25 @@
 
     <!-- main object -->
     <path
-        android:fillColor="#80FF0000"
+        android:fillColor="#800000FF"
         android:fillType="nonZero"
         android:pathData="M34,34 V54 H44 V44 H54 V34 Z"
         android:strokeColor="#FF000000"
         android:strokeWidth="2" />
     <path
-        android:fillColor="#8000FF00"
+        android:fillColor="#80FFFF00"
         android:fillType="nonZero"
         android:pathData="M54,34 H74 V54 H64 V44 H54 Z"
         android:strokeColor="#FF000000"
         android:strokeWidth="2" />
     <path
-        android:fillColor="#800000FF"
+        android:fillColor="#80FF0000"
         android:fillType="nonZero"
         android:pathData="M34,54 V74 H54 V64 H44 V54 Z"
         android:strokeColor="#FF000000"
         android:strokeWidth="2" />
     <path
-        android:fillColor="#80FFFF00"
+        android:fillColor="#8000FF00"
         android:fillType="nonZero"
         android:pathData="M64,54 H74 V74 H54 V64 H64 Z"
         android:strokeColor="#FF000000"
