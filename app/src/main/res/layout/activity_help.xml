@@ -120,6 +120,13 @@
                 android:text="@string/help_text_win_diag"
                 android:layout_margin="10dp"
                 />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_win_diag"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,6 +145,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_win_noop"
                 android:layout_margin="10dp"
+                />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_win_noop"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
                 />
 
             <TextView

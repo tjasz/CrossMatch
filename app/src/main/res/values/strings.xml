@@ -46,13 +46,13 @@
         all tiles in the rightmost column.
     </string>
     <string name="help_text_win_diag">In the image below, the white player has won by claiming
-        all tiles on a diagonal.
+        all tiles on the negative diagonal.
     </string>
     <string name="help_text_win_square">In the image below, the white player has won by claiming
         all tiles in the upper left 2x2 square.
     </string>
     <string name="help_text_win_noop">In the image below, the white player has won by claiming
-        the TODO tile, which is the last of its color and the last of its numeral.
+        the Green 3 tile, which is the last Green and last 3.
         This leaves no legal moves for the black player's following turn.
     </string>
     <string name="help_header_draw">Draw Game</string>
