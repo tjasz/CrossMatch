@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-public class HelpActivity extends FragmentActivity {
+public class HelpActivity extends AppCompatActivity  {
 
     private static final int NUM_PAGES = 7;
 
@@ -33,7 +33,7 @@ public class HelpActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // Instantiate a ViewPager and a PagerAdapter.
@@ -89,43 +89,36 @@ public class HelpActivity extends FragmentActivity {
                     return HelpFragment.newInstance(
                             R.string.help_header_play,
                             R.string.help_text_play,
-                            R.string.help_text_neighbor,
                             R.drawable.help_neighbor);
                 case 1:
                     return HelpFragment.newInstance(
                             R.string.help_header_win,
                             R.string.help_text_win,
-                            R.string.help_text_win_row,
                             R.drawable.help_win_row);
                 case 2:
                     return HelpFragment.newInstance(
                             R.string.help_header_win,
-                            R.string.empty,
                             R.string.help_text_win_col,
                             R.drawable.help_win_col);
                 case 3:
                     return HelpFragment.newInstance(
                             R.string.help_header_win,
-                            R.string.empty,
                             R.string.help_text_win_diag,
                             R.drawable.help_win_diag);
                 case 4:
                     return HelpFragment.newInstance(
                             R.string.help_header_win,
-                            R.string.empty,
                             R.string.help_text_win_square,
                             R.drawable.help_win_square);
                 case 5:
                     return HelpFragment.newInstance(
                             R.string.help_header_win,
-                            R.string.empty,
                             R.string.help_text_win_noop,
                             R.drawable.help_win_noop);
                 case 6:
                     return HelpFragment.newInstance(
                             R.string.help_header_draw,
                             R.string.help_text_draw,
-                            R.string.empty,
                             R.drawable.help_draw);
                 default:
                     return null;
