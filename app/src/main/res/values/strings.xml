@@ -47,7 +47,7 @@
     </string>
     <string name="help_text_win_noop">In the image below, the white player has won by claiming
         the Green 3 tile, which is the last Green and last 3.
-        This leaves no legal moves for the black player's following turn.
+        This leaves no legal moves for the black player\'s following turn.
     </string>
     <string name="help_header_draw">Draw Game</string>
     <string name="help_text_draw">A draw game is possible if all 16 tiles have been claimed,
