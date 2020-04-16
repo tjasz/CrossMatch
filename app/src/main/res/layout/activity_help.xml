@@ -20,7 +20,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_margin="10dp"
                 />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +34,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_margin="10dp"
                 />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,12 +48,24 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_margin="10dp"
                 />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_play"
                 android:layout_margin="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_neighbor"
+                android:layout_margin="10dp"
+                />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_neighbor"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
                 />
 
             <TextView
@@ -65,11 +75,54 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_margin="10dp"
                 />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_win"
+                android:layout_margin="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_header_examples"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_margin="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_win_row"
+                android:layout_margin="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_win_col"
+                android:layout_margin="10dp"
+                />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_win_col"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_win_diag"
+                android:layout_margin="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_win_square"
+                android:layout_margin="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_win_noop"
                 android:layout_margin="10dp"
                 />
 
@@ -80,12 +133,18 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_margin="10dp"
                 />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_draw"
                 android:layout_margin="10dp"
+                />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_draw"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
                 />
 
             <Button
