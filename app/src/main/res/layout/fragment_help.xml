@@ -41,7 +41,7 @@
                 android:layout_height="200dp"
                 android:id="@+id/help_img"
                 android:src="@drawable/help_draw"
-                android:scaleType="fitXY"
+                android:scaleType="centerInside"
                 android:layout_gravity="center"
                 />
 
