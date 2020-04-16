@@ -94,6 +94,13 @@
                 android:text="@string/help_text_win_row"
                 android:layout_margin="10dp"
                 />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_win_row"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,6 +125,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_win_square"
                 android:layout_margin="10dp"
+                />
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/help_win_square"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
                 />
             <TextView
                 android:layout_width="match_parent"
@@ -153,6 +167,8 @@
                 android:text="@string/help_done"
                 android:onClick="finishWrapper"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/tile_unclaimed_enabled"
+                android:layout_margin="10dp"
                 />
 
         </LinearLayout>

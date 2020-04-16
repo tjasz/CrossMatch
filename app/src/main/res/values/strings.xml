@@ -40,7 +40,7 @@
     </string>
     <string name="help_header_examples">Examples</string>
     <string name="help_text_win_row">In the image below, the white player has won by claiming
-        all tiles in the TODO row.
+        all tiles in the bottom row.
     </string>
     <string name="help_text_win_col">In the image below, the white player has won by claiming
         all tiles in the rightmost column.
@@ -49,7 +49,7 @@
         all tiles on a diagonal.
     </string>
     <string name="help_text_win_square">In the image below, the white player has won by claiming
-        all tiles in a 2x2 square.
+        all tiles in the upper left 2x2 square.
     </string>
     <string name="help_text_win_noop">In the image below, the white player has won by claiming
         the TODO tile, which is the last of its color and the last of its numeral.

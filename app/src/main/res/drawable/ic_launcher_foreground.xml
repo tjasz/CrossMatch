@@ -61,12 +61,12 @@
         android:fillType="nonZero"
         android:pathData="M44,44 H64 L44,64 Z"
         android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="1" />
+        android:strokeWidth="0" />
     <path
         android:fillColor="#FF000000"
         android:fillType="nonZero"
         android:pathData="M64,64 H44 L64,44 Z"
         android:strokeColor="#FF000000"
-        android:strokeWidth="1" />
+        android:strokeWidth="0" />
 
 </vector>

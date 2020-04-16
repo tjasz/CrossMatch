@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -108,6 +109,8 @@ public class GameActivity extends AppCompatActivity {
     {
         gameboard_gridview.setNumColumns(game_board.size());
         new_game_button.setEnabled(false); // disable button unless game is over
+        Drawable bkg = getResources().getDrawable(R.drawable.tile_unclaimed_disabled);
+        new_game_button.setBackground(bkg);
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         switch (game_board.game_state())
         {
@@ -143,6 +146,8 @@ public class GameActivity extends AppCompatActivity {
         if (game_board.game_over())
         {
             new_game_button.setEnabled(true); // if game is over, can start a new one
+            bkg = getResources().getDrawable(R.drawable.tile_unclaimed_enabled);
+            new_game_button.setBackground(bkg);
         }
         else if (game_board.is_fresh_board())
         {
