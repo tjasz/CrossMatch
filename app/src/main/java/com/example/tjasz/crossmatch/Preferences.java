@@ -12,7 +12,7 @@ public class Preferences {
     private static final String use_ai_key = "UseComputerOpponent";
 
     private static final int default_board_size = 4;
-    private static final int default_opponent_decision_time = 2000;
+    private static final int default_opponent_decision_time = 8000;
     private static final boolean default_use_ai = true;
 
     private static SharedPreferences get_overall(Context context)

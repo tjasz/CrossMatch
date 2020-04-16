@@ -23,6 +23,7 @@
         app:layout_constraintBottom_toTopOf="@id/button_play"
         />
 
+    <!--
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,5 +32,6 @@
         android:onClick="onClick"
         app:layout_constraintBottom_toTopOf="@id/button_help"
         />
+        -->
 
 </android.support.constraint.ConstraintLayout>
