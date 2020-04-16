@@ -16,16 +16,11 @@
 
 
     <string name="action_help">How to Play</string>
-    <string name="help_header_brief">Summary</string>
-    <string name="help_text_brief">Tesserekt is something like \"Uno Tic-Tac-Toe\"
-        on a slightly larger board.
-    </string>
-    <string name="help_header_begin">First Move</string>
-    <string name="help_text_begin">Start the game by tapping any tile
-        on the outer ring of the game board to claim it.
-    </string>
+
     <string name="help_header_play">Game Play</string>
-    <string name="help_text_play">Players alternate turns claiming a tile for their own.
+    <string name="help_text_play">Start the game by tapping any tile
+        on the outer ring of the game board to claim it.
+        Players alternate turns claiming a tile for their own.
         Only tiles that match either the color or the numeral of the tile claimed
         during the previous turn are eligible to be claimed.
     </string>
@@ -38,7 +33,6 @@
         diagonal, or 2x2 square of tiles.
         A player may also win by claiming a tile which cannot legally be followed.
     </string>
-    <string name="help_header_examples">Examples</string>
     <string name="help_text_win_row">In the image below, the white player has won by claiming
         all tiles in the bottom row.
     </string>
@@ -61,4 +55,8 @@
     </string>
 
     <string name="help_done">OK</string>
+    <string name="empty"></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
