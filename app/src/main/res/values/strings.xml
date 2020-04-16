@@ -56,7 +56,7 @@
         This leaves no legal moves for the black player's following turn.
     </string>
     <string name="help_header_draw">Draw Game</string>
-    <string name="help_text_draw">A draw game is possible is all 16 tiles have been claimed,
+    <string name="help_text_draw">A draw game is possible if all 16 tiles have been claimed,
         but no single row, column, diagonal, or 2x2 square has been claimed wholly by any player.
     </string>
 
