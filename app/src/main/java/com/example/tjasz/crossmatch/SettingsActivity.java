@@ -2,6 +2,7 @@ package com.example.tjasz.crossmatch;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.Group;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,7 @@ public class SettingsActivity extends AppCompatActivity {
     private RadioButton radio_p2_human;
     private NumberPicker boardsize_getter;
     private NumberPicker dectime_getter;
+    private Group difficulty_group;
 
     private static int index_value_to_dec_time(int x)
     {
@@ -68,10 +70,30 @@ public class SettingsActivity extends AppCompatActivity {
         int dectime = Preferences.get_opponent_decision_time(this);
         dectime_getter.setValue(dec_time_to_index_value((int) Math.round(dectime/1000.0)));
         dectime_getter.setWrapSelectorWheel(false);
-        dectime_getter.setDisplayedValues(range_to_displayed_values(
-                dectime_getter.getMinValue(),
-                dectime_getter.getMaxValue()));
+        //dectime_getter.setDisplayedValues(range_to_displayed_values(
+        //        dectime_getter.getMinValue(),
+        //        dectime_getter.getMaxValue()));
         dectime_getter.refreshDrawableState();
+
+        difficulty_group = (Group) findViewById(R.id.difficulty_group);
+        difficulty_group.setVisibility(use_ai ? View.VISIBLE : View.GONE);
+    }
+
+    public void onP2RadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_p2_ai:
+                if (checked)
+                    difficulty_group.setVisibility(View.VISIBLE);
+                    break;
+            case R.id.radio_p2_human:
+                if (checked)
+                    difficulty_group.setVisibility(View.GONE);
+                    break;
+        }
     }
 
     @Override
