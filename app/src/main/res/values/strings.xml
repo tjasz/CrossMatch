@@ -16,6 +16,7 @@
     <string name="use_ai_label">Computer</string>
     <string name="local_multi_label">Local Multiplayer (pass-to-play)</string>
     <string name="difficulty_heading">Difficulty</string>
+    <string name="boardsize_heading">Board Size</string>
 
 
     <string name="play">Play</string>

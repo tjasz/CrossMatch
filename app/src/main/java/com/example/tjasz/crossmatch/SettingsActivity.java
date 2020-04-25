@@ -6,6 +6,7 @@ import android.support.constraint.Group;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
@@ -16,6 +17,8 @@ public class SettingsActivity extends AppCompatActivity {
     private NumberPicker boardsize_getter;
     private NumberPicker dectime_getter;
     private Group difficulty_group;
+    private Group boardsize_group;
+    private Button button_done;
 
     private static int index_value_to_dec_time(int x)
     {
@@ -45,6 +48,16 @@ public class SettingsActivity extends AppCompatActivity {
         return retval;
     }
 
+    private static String[] range_to_boardsize_values(int lo, int hi)
+    {
+        String[] retval = new String[hi - lo + 1];
+        for (int i = 0; i < retval.length; ++i)
+        {
+            retval[i] = (i+lo) + "x" + (i+lo);
+        }
+        return retval;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +75,20 @@ public class SettingsActivity extends AppCompatActivity {
         boardsize_getter.setMaxValue(max_board_size);
         boardsize_getter.setValue(Preferences.get_board_size(this));
         boardsize_getter.setWrapSelectorWheel(false);
+        boardsize_getter.setDisplayedValues(range_to_boardsize_values(
+                boardsize_getter.getMinValue(),
+                boardsize_getter.getMaxValue()));
         boardsize_getter.refreshDrawableState();
+
+        boardsize_group = (Group) findViewById(R.id.boardsize_group);
+        button_done = (Button) findViewById(R.id.button_done);
+        button_done.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                boardsize_group.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
 
         dectime_getter = (NumberPicker) findViewById(R.id.dectime_getter);
         dectime_getter.setMinValue(0);
@@ -77,6 +103,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         difficulty_group = (Group) findViewById(R.id.difficulty_group);
         difficulty_group.setVisibility(use_ai ? View.VISIBLE : View.GONE);
+
     }
 
     public void onP2RadioButtonClicked(View view) {
