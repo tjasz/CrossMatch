@@ -108,9 +108,6 @@ public class GameActivity extends AppCompatActivity {
     public void update_display()
     {
         gameboard_gridview.setNumColumns(game_board.size());
-        new_game_button.setEnabled(false); // disable button unless game is over
-        Drawable bkg = getResources().getDrawable(R.drawable.tile_unclaimed_disabled);
-        new_game_button.setBackground(bkg);
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         switch (game_board.game_state())
         {
@@ -143,18 +140,12 @@ public class GameActivity extends AppCompatActivity {
                 game_status_textview.setText(R.string.draw);
                 break;
         }
-        if (game_board.game_over())
-        {
-            new_game_button.setEnabled(true); // if game is over, can start a new one
-            bkg = getResources().getDrawable(R.drawable.tile_unclaimed_enabled);
-            new_game_button.setBackground(bkg);
-        }
-        else if (game_board.is_fresh_board())
+        if (game_board.is_fresh_board())
         {
             game_status_textview.setText(getString(R.string.last_tile) + "-");
             game_status_textview.setTextColor(Color.BLACK);
         }
-        else {
+        else if (!game_board.game_over()) {
             char last_tile_char = CategoryDisplay.second_dim_to_char(
                     game_board.get_cell_second_category(game_board.get_last_tile()));
             game_status_textview.setText(getString(R.string.last_tile) +
