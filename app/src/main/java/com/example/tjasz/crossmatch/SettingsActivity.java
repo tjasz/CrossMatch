@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
 
 public class SettingsActivity extends AppCompatActivity {
+    private RadioButton radio_p2_ai;
+    private RadioButton radio_p2_human;
     private NumberPicker boardsize_getter;
     private NumberPicker dectime_getter;
-    private CheckBox use_ai_checkbox;
 
     private static int index_value_to_dec_time(int x)
     {
@@ -46,6 +48,12 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        radio_p2_ai = (RadioButton) findViewById(R.id.radio_p2_ai);
+        radio_p2_human = (RadioButton) findViewById(R.id.radio_p2_human);
+        boolean use_ai = Preferences.get_use_computer_opponent(this);
+        radio_p2_ai.setChecked(use_ai);
+        radio_p2_human.setChecked(!use_ai);
+
         boardsize_getter = (NumberPicker) findViewById(R.id.boardsize_getter);
         int max_board_size = getResources().obtainTypedArray(R.array.category_colors).length();
         boardsize_getter.setMinValue(GameBoard.min_size);
@@ -64,9 +72,6 @@ public class SettingsActivity extends AppCompatActivity {
                 dectime_getter.getMinValue(),
                 dectime_getter.getMaxValue()));
         dectime_getter.refreshDrawableState();
-
-        use_ai_checkbox = (CheckBox) findViewById(R.id.use_ai_checkbox);
-        use_ai_checkbox.setChecked(Preferences.get_use_computer_opponent(this));
     }
 
     @Override
@@ -76,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         Preferences.set_opponent_decision_time(this,
                 1000*index_value_to_dec_time(dectime_getter.getValue()));
         Preferences.set_board_size(this, boardsize_getter.getValue());
-        Preferences.set_use_computer_opponent(this, use_ai_checkbox.isChecked());
+        Preferences.set_use_computer_opponent(this, radio_p2_ai.isChecked());
     }
 
     // TODO save settings when navigating up via home button or hardware back button

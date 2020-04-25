@@ -5,11 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/use_ai_header"
+        android:text="@string/use_ai_heading"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_margin="10dp"
+        />
+
+    <RadioGroup
+        android:id="@+id/radio_p2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/use_ai_header"
+        android:orientation="vertical">
+        <RadioButton android:id="@+id/radio_p2_ai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/use_ai_label"
+            />
+        <RadioButton android:id="@+id/radio_p2_human"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/local_multi_label"
+            />
+    </RadioGroup>
+
     <NumberPicker
         android:id="@+id/boardsize_getter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
+        app:layout_constraintTop_toBottomOf="@id/radio_p2"
         />
 
     <NumberPicker
@@ -18,13 +47,7 @@
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
         app:layout_constraintLeft_toRightOf="@id/boardsize_getter"
-        />
-
-    <CheckBox
-        android:id="@+id/use_ai_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/dectime_getter"
+        app:layout_constraintTop_toBottomOf="@id/radio_p2"
         />
 
     <Button
