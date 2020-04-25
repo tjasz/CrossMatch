@@ -19,7 +19,7 @@
         android:id="@+id/button_play"
         android:text="@string/play"
         android:onClick="onClick"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_help"
         android:background="@drawable/tile_unclaimed_enabled"
         android:layout_margin="10dp"
         />
@@ -30,20 +30,20 @@
         android:id="@+id/button_help"
         android:text="@string/action_help"
         android:onClick="onClick"
-        app:layout_constraintBottom_toTopOf="@id/button_play"
+        app:layout_constraintBottom_toTopOf="@id/button_settings"
         android:background="@drawable/tile_unclaimed_enabled"
         android:layout_margin="10dp"
         />
 
-    <!--
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_settings"
         android:text="@string/action_edit_settings"
         android:onClick="onClick"
-        app:layout_constraintBottom_toTopOf="@id/button_help"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/tile_unclaimed_enabled"
+        android:layout_margin="10dp"
         />
-        -->
 
 </android.support.constraint.ConstraintLayout>

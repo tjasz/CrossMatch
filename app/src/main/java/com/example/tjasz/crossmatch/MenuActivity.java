@@ -52,10 +52,10 @@ public class MenuActivity extends AppCompatActivity {
                 intent = new Intent(this, HelpActivity.class);
                 startActivity(intent);
                 break;
-//            case R.id.button_settings:
-//                intent = new Intent(this, SettingsActivity.class);
-//                startActivity(intent);
-//                break;
+            case R.id.button_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
