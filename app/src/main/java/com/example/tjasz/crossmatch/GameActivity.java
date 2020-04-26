@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -121,37 +122,12 @@ public class GameActivity extends AppCompatActivity {
     {
         gameboard_gridview.setNumColumns(game_board.size());
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
-        switch (game_board.game_state())
-        {
-            case InProgress:
-                break;
-            case PlayerOneWon:
-                game_status_textview.setTextColor(Color.WHITE);
-                if (use_ai)
-                {
-                    game_status_textview.setText(R.string.you_win);
-                }
-                else
-                {
-                    game_status_textview.setText(R.string.p1_wins);
-                }
-                break;
-            case PlayerTwoWon:
-                game_status_textview.setTextColor(Color.BLACK);
-                if (use_ai)
-                {
-                    game_status_textview.setText(R.string.you_lose);
-                }
-                else
-                {
-                    game_status_textview.setText(R.string.p2_wins);
-                }
-                break;
-            case Draw:
-                game_status_textview.setTextColor(Color.BLACK);
-                game_status_textview.setText(R.string.draw);
-                break;
-        }
+        Pair<Integer, Integer> gameover_color_and_string = CategoryDisplay.gameover_color_and_string(
+                game_board.game_state(), use_ai
+        );
+        game_status_textview.setTextColor(gameover_color_and_string.first);
+        game_status_textview.setText(gameover_color_and_string.second);
+
         if (game_board.is_fresh_board())
         {
             game_status_textview.setText(getString(R.string.last_tile) + "-");

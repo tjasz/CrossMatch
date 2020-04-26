@@ -1,6 +1,7 @@
 package com.example.tjasz.crossmatch;
 
 import android.graphics.Color;
+import android.util.Pair;
 
 public class CategoryDisplay {
     // TODO this max, array, and first function are useless
@@ -72,5 +73,21 @@ public class CategoryDisplay {
             }
         }
         return R.drawable.tile_unclaimed_disabled;
+    }
+
+    public static Pair<Integer, Integer> gameover_color_and_string(GameBoard.GameState game_state, boolean use_ai)
+    {
+        switch (game_state)
+        {
+            case InProgress:
+                return Pair.create(Color.BLACK, R.string.empty);
+            case PlayerOneWon:
+                return Pair.create(Color.WHITE, use_ai ? R.string.you_win : R.string.p1_wins);
+            case PlayerTwoWon:
+                return Pair.create(Color.BLACK, use_ai ? R.string.you_lose : R.string.p2_wins);
+            case Draw:
+                return Pair.create(Color.BLACK, R.string.draw);
+        }
+        return Pair.create(Color.BLACK, R.string.empty);
     }
 }
