@@ -19,8 +19,11 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class GameActivity extends AppCompatActivity {
 
+    private Random random;
     private GridView gameboard_gridview;
     private ProgressBar progress_bar;
     private TextView game_status_textview;
@@ -28,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
 
     private GameBoard game_board;
     private boolean use_ai;
+    private boolean computer_first;
 
     public GameBoard get_game_board()
     {
@@ -60,6 +64,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         game_board = new GameBoard(Preferences.get_board_size(this));
+        random = new Random();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -73,7 +78,7 @@ public class GameActivity extends AppCompatActivity {
         new_game_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 GameActivity.this.new_game();
-                if (!game_board.game_over() && use_ai)
+                if (!game_board.game_over() && use_ai && computer_first)
                 {
                     progress_bar.setVisibility(View.VISIBLE);
                     game_status_textview.setVisibility(View.INVISIBLE);
@@ -87,7 +92,7 @@ public class GameActivity extends AppCompatActivity {
         update_display();
 
         new_game();
-        if (!game_board.game_over() && use_ai)
+        if (!game_board.game_over() && use_ai && computer_first)
         {
             progress_bar.setVisibility(View.VISIBLE);
             game_status_textview.setVisibility(View.INVISIBLE);
@@ -108,6 +113,32 @@ public class GameActivity extends AppCompatActivity {
         use_ai = Preferences.get_use_computer_opponent(this);
         target_opponent_decision_time = Preferences.get_opponent_decision_time(this);
         game_board.set_size(Preferences.get_board_size(this));
+        // determine if computer goes first
+        Preferences.FirstMove first_move = Preferences.get_first_move(this);
+        if (Preferences.FirstMove.Human == first_move)
+        {
+            computer_first = false;
+        }
+        else if (Preferences.FirstMove.AI == first_move)
+        {
+            computer_first = true;
+        }
+        else if (Preferences.FirstMove.Alternating == first_move)
+        {
+            computer_first = false; // TODO
+        }
+        else if (Preferences.FirstMove.Random == first_move)
+        {
+            computer_first = (random.nextInt() %2 == 0);
+        }
+        else if (Preferences.FirstMove.Winner == first_move)
+        {
+            computer_first = false; // TODO
+        }
+        else if (Preferences.FirstMove.Loser == first_move)
+        {
+            computer_first = false; // TODO
+        }
         game_board.init_game();
         update_display();
     }
@@ -123,7 +154,7 @@ public class GameActivity extends AppCompatActivity {
         gameboard_gridview.setNumColumns(game_board.size());
         ButtonAdapter adapter = (ButtonAdapter) gameboard_gridview.getAdapter();
         Pair<Integer, Integer> gameover_color_and_string = CategoryDisplay.gameover_color_and_string(
-                game_board.game_state(), use_ai
+                game_board.game_state(), use_ai, computer_first
         );
         game_status_textview.setTextColor(gameover_color_and_string.first);
         game_status_textview.setText(gameover_color_and_string.second);
@@ -167,6 +198,11 @@ public class GameActivity extends AppCompatActivity {
         current_search_depth = (int) Math.round((Math.log(target_opponent_decision_time) - Math.log(estimated_factor))
                 / Math.log(game_board.max_branching_factor()));
         return current_search_depth;
+    }
+
+    public boolean computer_first()
+    {
+        return computer_first;
     }
 
     public int get_search_depth()
@@ -263,7 +299,8 @@ public class GameActivity extends AppCompatActivity {
             btn.setBackgroundResource(
                     CategoryDisplay.tile_background_resource(cell_state,
                             btn.isEnabled(),
-                            position == mActivity.game_board.get_last_tile()));
+                            position == mActivity.game_board.get_last_tile(),
+                            computer_first));
 
             return btn;
         }

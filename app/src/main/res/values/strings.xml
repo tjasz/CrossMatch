@@ -16,6 +16,13 @@
     <string name="use_ai_label">Computer</string>
     <string name="local_multi_label">Local Multiplayer (pass-to-play)</string>
     <string name="difficulty_heading">Difficulty</string>
+    <string name="first_move_heading">First Move</string>
+    <string name="radio_first_move_human">Human</string>
+    <string name="radio_first_move_ai">Computer</string>
+    <string name="radio_first_move_alternating">Alternating</string>
+    <string name="radio_first_move_random">Random</string>
+    <string name="radio_first_move_winner">Winner</string>
+    <string name="radio_first_move_loser">Loser</string>
     <string name="boardsize_heading">Board Size</string>
 
 

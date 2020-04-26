@@ -2,22 +2,27 @@ package com.example.tjasz.crossmatch;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.Group;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 
 public class SettingsActivity extends AppCompatActivity {
     private RadioButton radio_p2_ai;
     private RadioButton radio_p2_human;
+    private RadioButton radio_first_move_ai;
+    private RadioButton radio_first_move_human;
+    private RadioButton radio_first_move_alternating;
+    private RadioButton radio_first_move_random;
+    private RadioButton radio_first_move_winner;
+    private RadioButton radio_first_move_loser;
     private NumberPicker boardsize_getter;
     private NumberPicker dectime_getter;
-    private Group difficulty_group;
-    private Group boardsize_group;
+    private LinearLayout ai_options_group;
+    private LinearLayout boardsize_group;
     private Button button_done;
 
     private static int index_value_to_dec_time(int x)
@@ -80,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
                 boardsize_getter.getMaxValue()));
         boardsize_getter.refreshDrawableState();
 
-        boardsize_group = (Group) findViewById(R.id.boardsize_group);
+        boardsize_group = (LinearLayout) findViewById(R.id.boardsize_group);
         button_done = (Button) findViewById(R.id.button_done);
         button_done.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -101,8 +106,37 @@ public class SettingsActivity extends AppCompatActivity {
         //        dectime_getter.getMaxValue()));
         dectime_getter.refreshDrawableState();
 
-        difficulty_group = (Group) findViewById(R.id.difficulty_group);
-        difficulty_group.setVisibility(use_ai ? View.VISIBLE : View.GONE);
+        radio_first_move_ai = (RadioButton) findViewById(R.id.radio_first_move_ai);
+        radio_first_move_human = (RadioButton) findViewById(R.id.radio_first_move_human);
+        radio_first_move_alternating = (RadioButton) findViewById(R.id.radio_first_move_alternating);
+        radio_first_move_random = (RadioButton) findViewById(R.id.radio_first_move_random);
+        radio_first_move_winner = (RadioButton) findViewById(R.id.radio_first_move_winner);
+        radio_first_move_loser = (RadioButton) findViewById(R.id.radio_first_move_loser);
+        Preferences.FirstMove first_move = Preferences.get_first_move(this);
+        switch(first_move)
+        {
+            case Human:
+                radio_first_move_human.setChecked(true);
+                break;
+            case AI:
+                radio_first_move_ai.setChecked(true);
+                break;
+            case Alternating:
+                radio_first_move_alternating.setChecked(true);
+                break;
+            case Random:
+                radio_first_move_random.setChecked(true);
+                break;
+            case Winner:
+                radio_first_move_winner.setChecked(true);
+                break;
+            case Loser:
+                radio_first_move_loser.setChecked(true);
+                break;
+        }
+
+        ai_options_group = (LinearLayout) findViewById(R.id.ai_options_group);
+        ai_options_group.setVisibility(use_ai ? View.VISIBLE : View.GONE);
 
     }
 
@@ -114,11 +148,11 @@ public class SettingsActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.radio_p2_ai:
                 if (checked)
-                    difficulty_group.setVisibility(View.VISIBLE);
+                    ai_options_group.setVisibility(View.VISIBLE);
                     break;
             case R.id.radio_p2_human:
                 if (checked)
-                    difficulty_group.setVisibility(View.GONE);
+                    ai_options_group.setVisibility(View.GONE);
                     break;
         }
     }
@@ -131,6 +165,29 @@ public class SettingsActivity extends AppCompatActivity {
                 1000*index_value_to_dec_time(dectime_getter.getValue()));
         Preferences.set_board_size(this, boardsize_getter.getValue());
         Preferences.set_use_computer_opponent(this, radio_p2_ai.isChecked());
+        Preferences.FirstMove first_move;
+        first_move = Preferences.FirstMove.Human;
+        if (radio_first_move_ai.isChecked())
+        {
+            first_move = Preferences.FirstMove.AI;
+        }
+        else if (radio_first_move_alternating.isChecked())
+        {
+            first_move = Preferences.FirstMove.Alternating;
+        }
+        else if (radio_first_move_random.isChecked())
+        {
+            first_move = Preferences.FirstMove.Random;
+        }
+        else if (radio_first_move_winner.isChecked())
+        {
+            first_move = Preferences.FirstMove.Winner;
+        }
+        else if (radio_first_move_loser.isChecked())
+        {
+            first_move = Preferences.FirstMove.Loser;
+        }
+        Preferences.set_first_move(this, first_move);
     }
 
     // TODO save settings when navigating up via home button or hardware back button
