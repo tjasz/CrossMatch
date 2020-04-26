@@ -31,7 +31,7 @@ public class GameActivity extends AppCompatActivity {
 
     private GameBoard game_board;
     private boolean use_ai;
-    private boolean computer_first;
+    private boolean computer_first = false;
 
     public GameBoard get_game_board()
     {
@@ -112,7 +112,6 @@ public class GameActivity extends AppCompatActivity {
         opponent_decision_time_factor = -1.0;
         use_ai = Preferences.get_use_computer_opponent(this);
         target_opponent_decision_time = Preferences.get_opponent_decision_time(this);
-        game_board.set_size(Preferences.get_board_size(this));
         // determine if computer goes first
         Preferences.FirstMove first_move = Preferences.get_first_move(this);
         if (Preferences.FirstMove.Human == first_move)
@@ -125,7 +124,7 @@ public class GameActivity extends AppCompatActivity {
         }
         else if (Preferences.FirstMove.Alternating == first_move)
         {
-            computer_first = false; // TODO
+            computer_first = !computer_first;
         }
         else if (Preferences.FirstMove.Random == first_move)
         {
@@ -133,12 +132,27 @@ public class GameActivity extends AppCompatActivity {
         }
         else if (Preferences.FirstMove.Winner == first_move)
         {
-            computer_first = false; // TODO
+            if ((GameBoard.GameState.PlayerOneWon == game_board.game_state()) == computer_first)
+            {
+                computer_first = true;
+            }
+            else
+            {
+                computer_first = false;
+            }
         }
         else if (Preferences.FirstMove.Loser == first_move)
         {
-            computer_first = false; // TODO
+            if ((GameBoard.GameState.PlayerOneWon == game_board.game_state()) == computer_first)
+            {
+                computer_first = false;
+            }
+            else
+            {
+                computer_first = true;
+            }
         }
+        game_board.set_size(Preferences.get_board_size(this));
         game_board.init_game();
         update_display();
     }
