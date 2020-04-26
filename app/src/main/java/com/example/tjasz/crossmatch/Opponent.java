@@ -5,29 +5,52 @@ import android.util.Log;
 import java.io.PipedOutputStream;
 
 public class Opponent {
-    public static int get_move(GameBoard board, int depth)
+    public static int get_move(GameBoard board, int depth, boolean is_player_one)
     {
-        if (!board.is_player_two_turn())
+        if (board.is_player_one_turn() != is_player_one)
         {
             throw new RuntimeException("Opponent.get_move() called on incorrect turn.");
         }
 
         // first maximizing step is outside, to get best move from it
         int best_move = 0; // TODO GameBoard should except when opponent play illegal moves
-        double max_value = Double.NEGATIVE_INFINITY;
-        // iterate over the possible moves
-        for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
+        if (is_player_one) // minimize
         {
-            if (board.is_valid_move(i))
+            double min_value = Double.POSITIVE_INFINITY;
+            // iterate over the possible moves
+            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
             {
-                GameBoard copy = new GameBoard(board);
-                copy.play(i);
-                // TODO parameterize depth
-                double value = alphabeta(copy, depth, max_value, Double.POSITIVE_INFINITY, false);
-                if (value >= max_value)
+                if (board.is_valid_move(i))
                 {
-                    best_move = i;
-                    max_value = value;
+                    GameBoard copy = new GameBoard(board);
+                    copy.play(i);
+                    // TODO parameterize depth
+                    double value = alphabeta(copy, depth, Double.NEGATIVE_INFINITY, min_value, true);
+                    if (value < min_value)
+                    {
+                        best_move = i;
+                        min_value = value;
+                    }
+                }
+            }
+        }
+        else // maximize
+        {
+            double max_value = Double.NEGATIVE_INFINITY;
+            // iterate over the possible moves
+            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
+            {
+                if (board.is_valid_move(i))
+                {
+                    GameBoard copy = new GameBoard(board);
+                    copy.play(i);
+                    // TODO parameterize depth
+                    double value = alphabeta(copy, depth, max_value, Double.POSITIVE_INFINITY, false);
+                    if (value >= max_value)
+                    {
+                        best_move = i;
+                        max_value = value;
+                    }
                 }
             }
         }

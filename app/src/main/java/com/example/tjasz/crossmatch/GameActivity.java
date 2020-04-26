@@ -72,6 +72,12 @@ public class GameActivity extends AppCompatActivity {
         new_game_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 GameActivity.this.new_game();
+                if (!game_board.game_over() && use_ai)
+                {
+                    progress_bar.setVisibility(View.VISIBLE);
+                    game_status_textview.setVisibility(View.INVISIBLE);
+                    new GetOpponentMoveTask(GameActivity.this).execute();
+                }
             }
         });
 
@@ -80,6 +86,12 @@ public class GameActivity extends AppCompatActivity {
         update_display();
 
         new_game();
+        if (!game_board.game_over() && use_ai)
+        {
+            progress_bar.setVisibility(View.VISIBLE);
+            game_status_textview.setVisibility(View.INVISIBLE);
+            new GetOpponentMoveTask(GameActivity.this).execute();
+        }
     }
 
     public int get_board_size()
