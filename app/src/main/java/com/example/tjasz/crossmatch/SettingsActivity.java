@@ -20,36 +20,14 @@ public class SettingsActivity extends AppCompatActivity {
     private RadioButton radio_first_move_winner;
     private RadioButton radio_first_move_loser;
     private NumberPicker boardsize_getter;
-    private NumberPicker dectime_getter;
+    private NumberPicker difficulty_getter;
     private LinearLayout ai_options_group;
     private LinearLayout boardsize_group;
     private Button button_done;
 
-    private static int index_value_to_dec_time(int x)
-    {
-        return (int) Math.pow(2, x);
-    }
-
-    private static int dec_time_to_index_value(int x)
-    {
-        return (int) (Math.log(x) / Math.log(2));
-    }
-
     private static String[] range_to_displayed_values(int lo, int hi)
     {
-        String[] retval = new String[hi - lo + 1];
-        for (int i = 0; i < retval.length; ++i)
-        {
-            int seconds = index_value_to_dec_time(i);
-            if (seconds >= 60)
-            {
-                retval[i] = seconds / 60 + "m " + seconds % 60 + "s";
-            }
-            else
-            {
-                retval[i] = index_value_to_dec_time(i) + " sec";
-            }
-        }
+        String[] retval = new String[]{"Cakewalk", "Easy", "Moderate", "Difficult", "Diabolical"};
         return retval;
     }
 
@@ -95,16 +73,16 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        dectime_getter = (NumberPicker) findViewById(R.id.dectime_getter);
-        dectime_getter.setMinValue(0);
-        dectime_getter.setMaxValue(7);
-        int dectime = Preferences.get_opponent_decision_time(this);
-        dectime_getter.setValue(dec_time_to_index_value((int) Math.round(dectime/1000.0)));
-        dectime_getter.setWrapSelectorWheel(false);
-        //dectime_getter.setDisplayedValues(range_to_displayed_values(
-        //        dectime_getter.getMinValue(),
-        //        dectime_getter.getMaxValue()));
-        dectime_getter.refreshDrawableState();
+        difficulty_getter = (NumberPicker) findViewById(R.id.dectime_getter);
+        difficulty_getter.setMinValue(2);
+        difficulty_getter.setMaxValue(6);
+        int difficulty = Preferences.get_mistake_prevalence(this);
+        difficulty_getter.setValue(difficulty);
+        difficulty_getter.setWrapSelectorWheel(false);
+        difficulty_getter.setDisplayedValues(range_to_displayed_values(
+                difficulty_getter.getMinValue(),
+                difficulty_getter.getMaxValue()));
+        difficulty_getter.refreshDrawableState();
 
         radio_first_move_ai = (RadioButton) findViewById(R.id.radio_first_move_ai);
         radio_first_move_human = (RadioButton) findViewById(R.id.radio_first_move_human);
@@ -161,8 +139,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
-        Preferences.set_opponent_decision_time(this,
-                1000*index_value_to_dec_time(dectime_getter.getValue()));
+        Preferences.set_mistake_prevalence(this,
+                difficulty_getter.getValue());
         Preferences.set_board_size(this, boardsize_getter.getValue());
         Preferences.set_use_computer_opponent(this, radio_p2_ai.isChecked());
         Preferences.FirstMove first_move;

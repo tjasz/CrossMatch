@@ -43,12 +43,14 @@ public class Preferences {
 
     private static final String overall_key = "CrossMatchPreferences";
     private static final String board_size_key = "BoardSize";
-    private static final String opponent_decision_time_key = "OpponentDecisionTime";
+    // private static final String opponent_decision_time_key = "OpponentDecisionTime";
+    private static final String mistake_prevalence_key = "MistakePrevalence";
     private static final String use_ai_key = "UseComputerOpponent";
     private static final String first_move_key = "FirstMove";
 
     private static final int default_board_size = 4;
     private static final int default_opponent_decision_time = 8000;
+    private static final int default_mistake_prevalence = 2;
     private static final boolean default_use_ai = true;
     private static final FirstMove default_first_move = FirstMove.Human;
 
@@ -79,13 +81,27 @@ public class Preferences {
     public static int get_opponent_decision_time(Context context)
     {
         SharedPreferences preferences = get_overall(context);
-        return preferences.getInt(opponent_decision_time_key, default_opponent_decision_time);
+        return default_opponent_decision_time;
+        // return preferences.getInt(opponent_decision_time_key, default_opponent_decision_time);
     }
 
-    public static void set_opponent_decision_time(Context context, int decision_time)
+//    public static void set_opponent_decision_time(Context context, int decision_time)
+//    {
+//        SharedPreferences.Editor editor = get_editor(context);
+//        editor.putInt(opponent_decision_time_key, decision_time);
+//        editor.commit();
+//    }
+
+    public static int get_mistake_prevalence(Context context)
+    {
+        SharedPreferences preferences = get_overall(context);
+        return preferences.getInt(mistake_prevalence_key, default_mistake_prevalence);
+    }
+
+    public static void set_mistake_prevalence(Context context, int mistake_prevalence)
     {
         SharedPreferences.Editor editor = get_editor(context);
-        editor.putInt(opponent_decision_time_key, decision_time);
+        editor.putInt(mistake_prevalence_key, mistake_prevalence);
         editor.commit();
     }
 

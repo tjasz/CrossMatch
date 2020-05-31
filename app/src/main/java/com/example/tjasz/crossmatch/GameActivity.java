@@ -240,6 +240,11 @@ public class GameActivity extends AppCompatActivity {
         return current_search_depth;
     }
 
+    int get_mistake_prevalence()
+    {
+        return Preferences.get_mistake_prevalence(this);
+    }
+
 
 
     // http://www.stealthcopter.com/blog/2010/09/android-creating-a-custom-adapter-for-gridview-buttonadapter/

@@ -22,7 +22,7 @@ public class GetOpponentMoveTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected Integer doInBackground(Void... nothing)
     {
-        return Opponent.get_move(activity_.get_game_board(), activity_.get_search_depth(), activity_.computer_first());
+        return Opponent.get_move(activity_.get_game_board(), activity_.get_search_depth(), activity_.computer_first(), activity_.get_mistake_prevalence());
     }
 
     @Override

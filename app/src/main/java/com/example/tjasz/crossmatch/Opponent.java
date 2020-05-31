@@ -3,13 +3,31 @@ package com.example.tjasz.crossmatch;
 import android.util.Log;
 
 import java.io.PipedOutputStream;
+import java.util.Random;
+import java.util.Vector;
 
 public class Opponent {
-    public static int get_move(GameBoard board, int depth, boolean is_player_one)
+    static Random rand;
+
+    public static int get_move(GameBoard board, int depth, boolean is_player_one, int mistake_prevalence)
     {
         if (board.is_player_one_turn() != is_player_one)
         {
             throw new RuntimeException("Opponent.get_move() called on incorrect turn.");
+        }
+
+        // if it's time for a random mistake, choose it instead of the best move
+        rand = new Random();
+        if (mistake_prevalence <= 5 && rand.nextDouble() < 1.0 / mistake_prevalence)
+        {
+            Log.i("DECISION", "making mistake!");
+            Vector<Integer> moves = new Vector<Integer>();
+            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i) {
+                if (board.is_valid_move(i)) {
+                    moves.add(i);
+                }
+            }
+            return moves.elementAt(rand.nextInt(moves.size()));
         }
 
         // first maximizing step is outside, to get best move from it
