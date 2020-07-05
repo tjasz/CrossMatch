@@ -63,11 +63,12 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        game_board = new GameBoard(Preferences.get_board_size(this));
-        random = new Random();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        game_board = new GameBoard(Preferences.get_board_size(this));
+        random = new Random();
 
         game_status_textview = findViewById(R.id.game_status_textview);
 
