@@ -11,7 +11,7 @@ public class GameBoard {
         cell_states = new ArrayList<>();
         category_assignments = new ArrayList<>();
         sequence_length_counts = new ArrayList<>();
-        init_game(size);
+        set_size(size);
     }
     public GameBoard(GameBoard source)
     {
@@ -49,6 +49,9 @@ public class GameBoard {
                 category_assignments.add(i);
                 cell_states.add(CellState.Unclaimed);
             }
+            moves_ = 0;
+            last_tile_ = -1;
+            game_state_ = GameState.InProgress;
         }
         else
         {
@@ -126,7 +129,7 @@ public class GameBoard {
         final int array_size = size()*size();
         for (int i = 0; i < array_size; ++i)
         {
-            cell_states.add(CellState.Unclaimed);
+            cell_states.set(i, CellState.Unclaimed);
         }
         // shuffle the mapping of spatial grid onto the categorical grid
         java.util.Collections.shuffle(category_assignments);
@@ -524,7 +527,10 @@ public class GameBoard {
         }
         if (!is_valid_move(index))
         {
-            throw new RuntimeException("Invalid move played.");
+            throw new RuntimeException("Invalid move played. Last tile categories (" +
+                    get_cell_first_category(last_tile_) + ", " + get_cell_second_category(last_tile_) +
+                    ") and played categories (" +
+                    get_cell_first_category(index) + ", " + get_cell_second_category(index) + "): " + category_assignments);
         }
         if (is_player_one_turn())
         {

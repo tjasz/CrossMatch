@@ -155,4 +155,140 @@ public class GameBoardTest {
         assertTrue(gb.is_edge(14));
         assertTrue(gb.is_edge(15));
     }
+
+    @Test
+    public void playtest3x3() {
+        GameBoard gb = new GameBoard(3);
+        // Leave commented out; do not shuffle the category assignments
+        //gb.init_game();
+
+        // ensure all cells are unclaimed
+        for (int i = 0; i < gb.size() * gb.size(); ++i)
+        {
+            assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(i));
+        }
+
+        // ensure only edges are valid moves
+        // first row
+        assertTrue(gb.is_valid_move(0));
+        assertTrue(gb.is_valid_move(1));
+        assertTrue(gb.is_valid_move(2));
+        // second row; middle cell is not an edge, not a valid move
+        assertTrue(gb.is_valid_move(3));
+        assertFalse(gb.is_valid_move(4));
+        assertTrue(gb.is_valid_move(5));
+        // last row
+        assertTrue(gb.is_valid_move(6));
+        assertTrue(gb.is_valid_move(7));
+        assertTrue(gb.is_valid_move(8));
+
+        // check initial state
+        assertTrue(gb.is_fresh_board());
+        assertTrue(gb.is_player_one_turn());
+        assertFalse(gb.is_player_two_turn());
+        assertEquals(8, gb.current_legal_moves());
+        assertEquals(9, gb.unclaimed_tiles());
+        assertFalse(gb.game_over());
+        assertEquals(GameBoard.GameState.InProgress, gb.game_state());
+
+        gb.play(0);
+        // ensure cell states
+        assertEquals(GameBoard.CellState.PlayerOne, gb.get_cell_state(0));
+        for (int i = 1; i < gb.size() * gb.size(); ++i)
+        {
+            assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(i));
+        }
+        // check game state
+        assertFalse(gb.is_fresh_board());
+        assertFalse(gb.is_player_one_turn());
+        assertTrue(gb.is_player_two_turn());
+        assertEquals(4, gb.current_legal_moves());
+        assertEquals(8, gb.unclaimed_tiles());
+        assertFalse(gb.game_over());
+        assertEquals(GameBoard.GameState.InProgress, gb.game_state());
+
+        gb.play(1);
+        // ensure cell states
+        assertEquals(GameBoard.CellState.PlayerOne, gb.get_cell_state(0));
+        assertEquals(GameBoard.CellState.PlayerTwo, gb.get_cell_state(1));
+        for (int i = 2; i < gb.size() * gb.size(); ++i)
+        {
+            assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(i));
+        }
+        // check game state
+        assertFalse(gb.is_fresh_board());
+        assertTrue(gb.is_player_one_turn());
+        assertFalse(gb.is_player_two_turn());
+        assertEquals(3, gb.current_legal_moves());
+        assertEquals(7, gb.unclaimed_tiles());
+        assertFalse(gb.game_over());
+        assertEquals(GameBoard.GameState.InProgress, gb.game_state());
+
+        gb.play(4);
+        // ensure cell states
+        assertEquals(GameBoard.CellState.PlayerOne, gb.get_cell_state(0));
+        assertEquals(GameBoard.CellState.PlayerTwo, gb.get_cell_state(1));
+        assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(2));
+        assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(3));
+        assertEquals(GameBoard.CellState.PlayerOne, gb.get_cell_state(4));
+        for (int i = 5; i < gb.size() * gb.size(); ++i)
+        {
+            assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(i));
+        }
+        // check game state
+        assertFalse(gb.is_fresh_board());
+        assertFalse(gb.is_player_one_turn());
+        assertTrue(gb.is_player_two_turn());
+        assertEquals(3, gb.current_legal_moves());
+        assertEquals(6, gb.unclaimed_tiles());
+        assertFalse(gb.game_over());
+        assertEquals(GameBoard.GameState.InProgress, gb.game_state());
+
+        gb.play(5);
+        // check game state
+        assertEquals(3, gb.current_legal_moves());
+        assertEquals(5, gb.unclaimed_tiles());
+        assertFalse(gb.game_over());
+        assertEquals(GameBoard.GameState.InProgress, gb.game_state());
+
+        gb.play(8);
+        // check game state
+        assertEquals(0, gb.current_legal_moves());
+        assertEquals(4, gb.unclaimed_tiles());
+        assertTrue(gb.game_over());
+        assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
+
+        // re-init and check initial state
+        gb.init_game();
+
+        // ensure all cells are unclaimed
+        for (int i = 0; i < gb.size() * gb.size(); ++i)
+        {
+            assertEquals(GameBoard.CellState.Unclaimed, gb.get_cell_state(i));
+        }
+
+        // ensure only edges are valid moves
+        // first row
+        assertTrue(gb.is_valid_move(0));
+        assertTrue(gb.is_valid_move(1));
+        assertTrue(gb.is_valid_move(2));
+        // second row; middle cell is not an edge, not a valid move
+        assertTrue(gb.is_valid_move(3));
+        assertFalse(gb.is_valid_move(4));
+        assertTrue(gb.is_valid_move(5));
+        // last row
+        assertTrue(gb.is_valid_move(6));
+        assertTrue(gb.is_valid_move(7));
+        assertTrue(gb.is_valid_move(8));
+
+        // check initial state
+        assertTrue(gb.is_fresh_board());
+        assertTrue(gb.is_player_one_turn());
+        assertFalse(gb.is_player_two_turn());
+        assertEquals(8, gb.current_legal_moves());
+        assertEquals(9, gb.unclaimed_tiles());
+        assertFalse(gb.game_over());
+        assertEquals(GameBoard.GameState.InProgress, gb.game_state());
+
+    }
 }
