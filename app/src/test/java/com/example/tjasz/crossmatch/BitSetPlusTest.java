@@ -30,6 +30,7 @@ public class BitSetPlusTest {
         bs.set_range(0,1,1);
         long[] expected = {1L};
         assertArrayEqualsHex(expected, bs.toLongArray());
+        assertEquals(1, bs.get_range(0, 1));
     }
     @Test
     public void set_range_2() {
@@ -37,6 +38,7 @@ public class BitSetPlusTest {
         bs.set_range(0,2,2);
         long[] expected = {2L};
         assertArrayEqualsHex(expected, bs.toLongArray());
+        assertEquals(2, bs.get_range(0, 2));
     }
     @Test
     public void set_range_offset() {
@@ -45,5 +47,7 @@ public class BitSetPlusTest {
         bs.set_range(4,4,0xC);
         long[] expected = {0xC2L};
         assertArrayEqualsHex(expected, bs.toLongArray());
+        assertEquals(0x2, bs.get_range(0, 4));
+        assertEquals(0xC, bs.get_range(4, 4));
     }
 }

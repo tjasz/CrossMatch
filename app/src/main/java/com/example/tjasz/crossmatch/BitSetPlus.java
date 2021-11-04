@@ -17,4 +17,17 @@ public class BitSetPlus extends BitSet {
             set(fromIndex+i, 0 != (val & mask));
         }
     }
+
+    int get_range(int fromIndex, int len)
+    {
+        int result = 0;
+        for (int i = 0; i < len; ++i)
+        {
+            if (get(fromIndex+i))
+            {
+                result |= (0x01 << i);
+            }
+        }
+        return result;
+    }
 }

@@ -19,6 +19,21 @@ public class GameBoardTest {
         }
     }
 
+    private void assertEqualsGB(GameBoard a, GameBoard b)
+    {
+        assertEquals(a.size(), b.size());
+        assertEquals(a.unclaimed_tiles(), b.unclaimed_tiles());
+        assertEquals(a.game_state(), b.game_state());
+        assertEquals(a.get_last_tile(), b.get_last_tile());
+
+        for (int i = 0; i < a.size()*a.size(); ++i)
+        {
+            assertEquals(a.get_cell_first_category(i), b.get_cell_first_category(i));
+            assertEquals(a.get_cell_second_category(i), b.get_cell_second_category(i));
+            assertEquals(a.get_cell_state(i), b.get_cell_state(i));
+        }
+    }
+
     @Test
     public void set_size() {
         GameBoard gb = new GameBoard(4);
@@ -270,9 +285,11 @@ public class GameBoardTest {
         // test to_bitset
         BitSetPlus bits = gb.to_bitset();
         long[] actual = bits.toLongArray();
-        //                    3        0   1   2   3   4   5   6   7   8   1 2 0 0 1 2 0 0 1
-        long[] expected = {0b00000011_000000010010001101000101011001111000_011000000110000001L};
+        //                    8 1 0 0 2 1 0 0 2 1  8   7   6   5   4   3   2   1   0    3            8
+        long[] expected = {0b00_010000100100001001_100001110110010101000011001000010000_00000011L, 0b000010L};
         assertArrayEqualsHex(expected, actual);
+        GameBoard copy = GameBoard.from_bitset(bits);
+        assertEqualsGB(gb, copy);
 
         // re-init and check initial state
         gb.init_game();
@@ -313,15 +330,27 @@ public class GameBoardTest {
         GameBoard gb = new GameBoard(2);
         BitSetPlus bits = gb.to_bitset();
         long[] arr = bits.toLongArray();
-        //                   2        0 1 2 3  0 0 0 0
-        long[] expected = {0b00000010_00011011_00000000L};
+        //                   -1       0 0 0 0  3 2 1 0  2
+        long[] expected = {0b11111111_00000000_11100100_00000010L};
         assertArrayEqualsHex(expected, arr);
+        GameBoard copy = GameBoard.from_bitset(bits);
+        assertEqualsGB(gb, copy);
 
         gb.set_size(3);
         bits = gb.to_bitset();
         arr = bits.toLongArray();
-        //                    3        0   1   2   3   4   5   6   7   8    0 0 0 0 0 0 0 0 0
-        long[] expected3 = {0b00000011_000000010010001101000101011001111000_000000000000000000L};
+        //                    -1       0 0 0 0 0 0 0 0 0  8   7   6   5   4   3   2   1   0    3      -1
+        long[] expected3 = {0b11_000000000000000000_100001110110010101000011001000010000_00000011L, 0b111111L};
         assertArrayEqualsHex(expected3, arr);
+        copy = GameBoard.from_bitset(bits);
+        assertEqualsGB(gb, copy);
+
+        gb.set_size(4);
+        bits = gb.to_bitset();
+        arr = bits.toLongArray();
+        long[] expected4 = {0xDCBA9876543210_04L, 0xFF_00000000_FEL};
+        assertArrayEqualsHex(expected4, arr);
+        copy = GameBoard.from_bitset(bits);
+        assertEqualsGB(gb, copy);
     }
 }

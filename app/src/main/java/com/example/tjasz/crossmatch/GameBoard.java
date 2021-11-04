@@ -27,6 +27,28 @@ public class GameBoard {
         last_tile_ = source.last_tile_;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this)
+        {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass())
+        {
+            return false;
+        }
+        GameBoard rhs = (GameBoard) obj;
+        Boolean result = (size_ == rhs.size_ && moves_ == rhs.moves_ &&
+                game_state_ == rhs.game_state_ && last_tile_ == rhs.last_tile_);
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            result = (result && category_assignments.get(i) == rhs.category_assignments.get(i) &&
+                    cell_states.get(i) == rhs.cell_states.get(i));
+        }
+        return result;
+    }
+
     public BitSetPlus to_bitset()
     {
         assert(size() <= 16);
@@ -57,36 +79,103 @@ public class GameBoard {
         }
         int nbits = 8 + // 8 for the board size
                 catassign_bits * size()*size() + // grid of category assignments
-                2 * size()*size(); // grid of cell states
-        int offset = nbits;
+                2 * size()*size() + // grid of cell states
+                8; // last tile
+        int offset = 0;
 
         BitSetPlus result = new BitSetPlus(nbits);
 
         Log.d("BITSET", String.format("adding %d bits at offset %d: %x", 8, offset, size()));
-        offset -= 8;
         result.set_range(offset, 8, size());
+        offset += 8;
         for (int i = 0; i < size()*size(); ++i)
         {
             int category = category_assignments.get(i).byteValue();
             Log.d("BITSET", String.format("adding %d bits at offset %d: %x", catassign_bits, offset, category));
-            offset -= catassign_bits;
             result.set_range(offset, catassign_bits, category);
+            offset += catassign_bits;
         }
         for (int i = 0; i < size()*size(); ++i)
         {
             int cell = cell_states.get(i).ordinal();
             Log.d("BITSET", String.format("adding %d bits at offset %d: %x", 2, offset, cell));
-            offset -= 2;
             result.set_range(offset, 2, cell);
+            offset += 2;
         }
+        result.set_range(offset, 8, last_tile_);
+        offset += 8;
 
         return result;
     }
 
+    public static GameBoard from_bitset(BitSetPlus bs)
+    {
+        int offset = 0;
+        int size = bs.get_range(offset, 8);
+        offset += 8;
+        GameBoard gb = new GameBoard(size);
+        assert(gb.size() <= 16);
+
+        int catassign_bits = 8;
+        if (gb.size() <= 1)
+        {
+            catassign_bits = 1;
+        }
+        else if (gb.size() <= 2)
+        {
+            catassign_bits = 2;
+        }
+        else if (gb.size() <= 4)
+        {
+            catassign_bits = 4;
+        }
+        else if (gb.size() <= 5)
+        {
+            catassign_bits = 5;
+        }
+        else if (gb.size() <= 8)
+        {
+            catassign_bits = 6;
+        }
+        else if (gb.size() <= 11)
+        {
+            catassign_bits = 7;
+        }
+
+        for (int i = 0; i < gb.size()*gb.size(); ++i)
+        {
+            int cat = bs.get_range(offset, catassign_bits);
+            assert(cat <= gb.size()*gb.size());
+            gb.category_assignments.set(i, cat);
+            offset += catassign_bits;
+        }
+        gb.moves_ = 0;
+        for (int i = 0; i < gb.size()*gb.size(); ++i)
+        {
+            int cs_int = bs.get_range(offset, 2);
+            assert(cs_int >= 0 && cs_int < CellState.values().length);
+            GameBoard.CellState cell_state = GameBoard.CellState.values()[cs_int];
+            gb.cell_states.set(i, cell_state);
+            if (cell_state != CellState.Unclaimed)
+            {
+                gb.moves_ += 1;
+            }
+            offset += 2;
+        }
+        int last_tile = bs.get_range(offset, 8);
+        // TODO this won't work if size actually ever is 16
+        gb.last_tile_ = last_tile > gb.size()*gb.size() - 1 ? -1 : last_tile;
+        offset += 8;
+
+        gb.game_state_ = gb.determine_game_state();
+
+        return gb;
+    }
+
     // manage the positive size of the square game board
     public static final int min_size = 2;
-    private static int size_;
-    private static int smaller_factor_ = -1;
+    private int size_;
+    private int smaller_factor_ = -1;
     public int size()
     {
         return size_;
