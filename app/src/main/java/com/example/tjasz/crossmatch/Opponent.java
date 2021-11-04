@@ -1,6 +1,7 @@
 package com.example.tjasz.crossmatch;
 
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.PipedOutputStream;
 import java.util.Random;
@@ -9,7 +10,7 @@ import java.util.Vector;
 public class Opponent {
     static Random rand;
 
-    public static int get_move(GameBoard board, int depth, boolean is_player_one, int mistake_prevalence)
+    public static Pair<Integer, Double> get_move(GameBoard board, int depth, boolean is_player_one, int mistake_prevalence)
     {
         if (board.is_player_one_turn() != is_player_one)
         {
@@ -27,14 +28,15 @@ public class Opponent {
                     moves.add(i);
                 }
             }
-            return moves.elementAt(rand.nextInt(moves.size()));
+            return new Pair<Integer, Double>(moves.elementAt(rand.nextInt(moves.size())), 0.0);
         }
 
         // first maximizing step is outside, to get best move from it
+        double optimal_value;
         int best_move = 0; // TODO GameBoard should except when opponent play illegal moves
         if (is_player_one) // minimize
         {
-            double min_value = Double.POSITIVE_INFINITY;
+            optimal_value = Double.POSITIVE_INFINITY;
             // iterate over the possible moves
             for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
             {
@@ -43,18 +45,18 @@ public class Opponent {
                     GameBoard copy = new GameBoard(board);
                     copy.play(i);
                     // TODO parameterize depth
-                    double value = alphabeta(copy, depth, Double.NEGATIVE_INFINITY, min_value, true);
-                    if (value < min_value)
+                    double value = alphabeta(copy, depth, Double.NEGATIVE_INFINITY, optimal_value, true);
+                    if (value < optimal_value)
                     {
                         best_move = i;
-                        min_value = value;
+                        optimal_value = value;
                     }
                 }
             }
         }
         else // maximize
         {
-            double max_value = Double.NEGATIVE_INFINITY;
+            optimal_value = Double.NEGATIVE_INFINITY;
             // iterate over the possible moves
             for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
             {
@@ -63,16 +65,16 @@ public class Opponent {
                     GameBoard copy = new GameBoard(board);
                     copy.play(i);
                     // TODO parameterize depth
-                    double value = alphabeta(copy, depth, max_value, Double.POSITIVE_INFINITY, false);
-                    if (value >= max_value)
+                    double value = alphabeta(copy, depth, optimal_value, Double.POSITIVE_INFINITY, false);
+                    if (value >= optimal_value)
                     {
                         best_move = i;
-                        max_value = value;
+                        optimal_value = value;
                     }
                 }
             }
         }
-        return best_move;
+        return new Pair<Integer, Double>(best_move, optimal_value);
     }
 
     // TODO name local variables in this function better

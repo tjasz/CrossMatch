@@ -182,7 +182,25 @@ public class GameActivity extends AppCompatActivity {
         else if (!game_board.game_over()) {
             char last_tile_char = CategoryDisplay.second_dim_to_char(
                     game_board.get_cell_second_category(game_board.get_last_tile()));
-            game_status_textview.setText(getString(R.string.last_tile) +
+            // Add emoji to display AI's assessment of game.
+            // * If perfect play will result in AI win, display devil emoji.
+            // * If perfect play will result in draw, display flat face.
+            // * If perfect play will lead to user win, display crying emoji.
+            // * If unknown outcome due to insufficient search depth, display no emoji.
+            String emoji = "";
+            if (get_mistake_prevalence() > 5 && optimal_ai_value >= 1)
+            {
+                emoji = computer_first ? "\uD83D\uDE22" : "\uD83D\uDE08";
+            }
+            else if (get_mistake_prevalence() > 5 && optimal_ai_value == 0)
+            {
+                emoji = "\uD83D\uDE10";
+            }
+            else if (optimal_ai_value <= -1)
+            {
+                emoji = computer_first ? "\uD83D\uDE08" : "\uD83D\uDE22";
+            }
+            game_status_textview.setText(emoji + getString(R.string.last_tile) +
                     Character.toString(last_tile_char));
             game_status_textview.setTextColor(first_dim_to_color(
                     game_board.get_cell_first_category(game_board.get_last_tile())));
@@ -205,6 +223,14 @@ public class GameActivity extends AppCompatActivity {
         // solving for k: k = t / (b^d)
         opponent_decision_time_factor = millis / Math.pow(game_board.max_branching_factor(), current_search_depth);
         Log.i("DECISION", "opponent_decision_time_factor: " + Double.toString(opponent_decision_time_factor));
+    }
+
+    private double optimal_ai_value;
+
+    public void tell_optimal_ai_value(double optimal_value)
+    {
+        optimal_ai_value = optimal_value;
+        Log.i("DECISION", "optimal_value: " + Double.toString(optimal_ai_value));
     }
 
     private int get_initial_search_depth()
