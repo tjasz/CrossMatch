@@ -39,13 +39,14 @@ public class GameBoard {
     {
         if (new_size > 0) {
             size_ = new_size;
+            smaller_factor_ = -1;
         }
         else
         {
             throw new RuntimeException("An attempt to set a non-positive board size was observed.");
         }
     }
-    private static int smaller_factor()
+    public static int smaller_factor()
     {
         if (smaller_factor_ > 0)
         {
@@ -62,16 +63,28 @@ public class GameBoard {
         }
         return 1;
     }
-    private static int larger_factor()
+    public static int larger_factor()
     {
         return size() / smaller_factor();
     }
     public static int num_clusters()
     {
-        return 2*size() + // rows, columns
-                2 + // diagonals
-                (smaller_factor() == 1 ? 0 : (size()-smaller_factor()+1)*(size()-larger_factor()+1)) + // larger_factor() by smaller_factor() clusters
-                (smaller_factor() == larger_factor() ? 0 : (size()-larger_factor()+1)*(size()-smaller_factor()+1)); // smaller_factor() by larger_factor() clusters
+        if (size() == 1)
+        {
+            return 1;
+        }
+        int result = 2*size() + 2; // rows, columns, diagonals
+        if (smaller_factor() != 1) // do not double count the columns or rows
+        {
+            // larger_factor() by smaller_factor() clusters
+            result += (size()-smaller_factor()+1)*(size()-larger_factor()+1);
+            if (smaller_factor() != larger_factor()) // do not double count when looking for squares
+            {
+                // smaller_factor() by larger_factor() clusters
+                result += (size()-larger_factor()+1)*(size()-smaller_factor()+1);
+            }
+        }
+        return result;
     }
 
     public static enum GameState
@@ -199,7 +212,7 @@ public class GameBoard {
         {
             throw new RuntimeException("Second dimension index out of range.");
         }
-        return category_assignments.get(first_dim*size()+second_dim);
+        return get_cell_second_category(first_dim*size()+second_dim);
     }
 
     public boolean is_valid_move(int index)
@@ -242,6 +255,10 @@ public class GameBoard {
     }
     public int current_legal_moves()
     {
+        if (is_fresh_board())
+        {
+            return 4*(size() - 1);
+        }
         int count = 0;
         for (int i = 0; i < size()*size(); ++i)
         {
@@ -495,6 +512,10 @@ public class GameBoard {
         if (index < 0 || index >= size()*size())
         {
             throw new RuntimeException("Index out of range.");
+        }
+        if (!is_valid_move(index))
+        {
+            throw new RuntimeException("Invalid move played.");
         }
         if (is_player_one_turn())
         {
