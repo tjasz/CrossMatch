@@ -10,6 +10,15 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class GameBoardTest {
+    private void assertArrayEqualsHex(long[] expected, long[] actual) {
+        assertEquals(expected.length, actual.length);
+        for (int i = 0; i < expected.length; ++i)
+        {
+            assertEquals("expected: 0x" + String.format("%x", expected[i]) +
+                    " but was: 0x" + String.format("%x", actual[i]), expected[i], actual[i]);
+        }
+    }
+
     @Test
     public void set_size() {
         GameBoard gb = new GameBoard(4);
@@ -258,6 +267,13 @@ public class GameBoardTest {
         assertTrue(gb.game_over());
         assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
 
+        // test to_bitset
+        BitSetPlus bits = gb.to_bitset();
+        long[] actual = bits.toLongArray();
+        //                    3        0   1   2   3   4   5   6   7   8   1 2 0 0 1 2 0 0 1
+        long[] expected = {0b00000011_000000010010001101000101011001111000_011000000110000001L};
+        assertArrayEqualsHex(expected, actual);
+
         // re-init and check initial state
         gb.init_game();
 
@@ -290,5 +306,22 @@ public class GameBoardTest {
         assertFalse(gb.game_over());
         assertEquals(GameBoard.GameState.InProgress, gb.game_state());
 
+    }
+
+    @Test
+    public void to_bitset() {
+        GameBoard gb = new GameBoard(2);
+        BitSetPlus bits = gb.to_bitset();
+        long[] arr = bits.toLongArray();
+        //                   2        0 1 2 3  0 0 0 0
+        long[] expected = {0b00000010_00011011_00000000L};
+        assertArrayEqualsHex(expected, arr);
+
+        gb.set_size(3);
+        bits = gb.to_bitset();
+        arr = bits.toLongArray();
+        //                    3        0   1   2   3   4   5   6   7   8    0 0 0 0 0 0 0 0 0
+        long[] expected3 = {0b00000011_000000010010001101000101011001111000_000000000000000000L};
+        assertArrayEqualsHex(expected3, arr);
     }
 }

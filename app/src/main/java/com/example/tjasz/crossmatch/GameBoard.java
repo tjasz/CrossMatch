@@ -3,6 +3,7 @@ package com.example.tjasz.crossmatch;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 
 public class GameBoard {
     // construct from an integer, another GameBoard, or by default
@@ -24,6 +25,62 @@ public class GameBoard {
         moves_ = source.moves_;
         game_state_ = source.game_state_;
         last_tile_ = source.last_tile_;
+    }
+
+    public BitSetPlus to_bitset()
+    {
+        assert(size() <= 16);
+        int catassign_bits = 8;
+        if (size() <= 1)
+        {
+            catassign_bits = 1;
+        }
+        else if (size() <= 2)
+        {
+            catassign_bits = 2;
+        }
+        else if (size() <= 4)
+        {
+            catassign_bits = 4;
+        }
+        else if (size() <= 5)
+        {
+            catassign_bits = 5;
+        }
+        else if (size() <= 8)
+        {
+            catassign_bits = 6;
+        }
+        else if (size() <= 11)
+        {
+            catassign_bits = 7;
+        }
+        int nbits = 8 + // 8 for the board size
+                catassign_bits * size()*size() + // grid of category assignments
+                2 * size()*size(); // grid of cell states
+        int offset = nbits;
+
+        BitSetPlus result = new BitSetPlus(nbits);
+
+        Log.d("BITSET", String.format("adding %d bits at offset %d: %x", 8, offset, size()));
+        offset -= 8;
+        result.set_range(offset, 8, size());
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            int category = category_assignments.get(i).byteValue();
+            Log.d("BITSET", String.format("adding %d bits at offset %d: %x", catassign_bits, offset, category));
+            offset -= catassign_bits;
+            result.set_range(offset, catassign_bits, category);
+        }
+        for (int i = 0; i < size()*size(); ++i)
+        {
+            int cell = cell_states.get(i).ordinal();
+            Log.d("BITSET", String.format("adding %d bits at offset %d: %x", 2, offset, cell));
+            offset -= 2;
+            result.set_range(offset, 2, cell);
+        }
+
+        return result;
     }
 
     // manage the positive size of the square game board
