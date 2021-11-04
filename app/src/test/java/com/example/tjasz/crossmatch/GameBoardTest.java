@@ -326,7 +326,7 @@ public class GameBoardTest {
     }
 
     @Test
-    public void to_bitset() {
+    public void bitset_conversion() {
         GameBoard gb = new GameBoard(2);
         BitSetPlus bits = gb.to_bitset();
         long[] arr = bits.toLongArray();
@@ -352,5 +352,60 @@ public class GameBoardTest {
         assertArrayEqualsHex(expected4, arr);
         copy = GameBoard.from_bitset(bits);
         assertEqualsGB(gb, copy);
+    }
+
+    @Test
+    public void determine_game_state() {
+        GameBoard gb = new GameBoard(4);
+        BitSetPlus bits = gb.to_bitset();
+        long[] arr = bits.toLongArray();
+
+        long[] expected4 = {0xDCBA9876543210_04L, 0xFF_00000000_FEL};
+        assertArrayEqualsHex(expected4, arr);
+
+        // bits at offset 72 through 104 are the cell states
+        // set column 0 to player 1
+        bits.set_range(72, 32, 0x010101a9);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
+        // set column 1 to player 1
+        bits.set_range(72, 32, 0x040404a6);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
+        // set column 2 to player 1
+        bits.set_range(72, 32, 0x1010109a);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
+        // set column 3 to player 1
+        bits.set_range(72, 32, 0x4040406a);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
+        // set row 0 to player 2
+        bits.set_range(72, 32, 0x010101aa);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerTwoWon, gb.game_state());
+        // set row 1 to player 2
+        bits.set_range(72, 32, 0x0101aa01);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerTwoWon, gb.game_state());
+        // set row 2 to player 2
+        bits.set_range(72, 32, 0x01aa0101);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerTwoWon, gb.game_state());
+        // set row 3 to player 2
+        bits.set_range(72, 32, 0xaa010101);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerTwoWon, gb.game_state());
+        // set negative diagonal to player 1
+        bits.set_range(72, 32, 0x0104106a);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerOneWon, gb.game_state());
+        // set positive diagonal to player 2
+        bits.set_range(72, 32, 0x80200856);
+        gb = GameBoard.from_bitset(bits);
+        assertEquals(GameBoard.GameState.PlayerTwoWon, gb.game_state());
+        // TODO squares, rectangles, last move has no followup
+        // TODO draw game
+        // TODO in progress
     }
 }

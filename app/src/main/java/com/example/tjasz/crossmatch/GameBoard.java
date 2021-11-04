@@ -48,6 +48,11 @@ public class GameBoard {
         }
         return result;
     }
+    @Override
+    public int hashCode()
+    {
+        return to_bitset().hashCode();
+    }
 
     public BitSetPlus to_bitset()
     {
