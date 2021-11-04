@@ -28,25 +28,34 @@ public class GameBoard {
 
     // manage the positive size of the square game board
     public static final int min_size = 2;
-    public static final int max_size = CategoryDisplay.MAX_COLORS;
     private static int size_;
     private static int smaller_factor_ = -1;
-    public static int size()
+    public int size()
     {
         return size_;
     }
-    public static void set_size(int new_size)
+    public void set_size(int new_size)
     {
         if (new_size > 0) {
             size_ = new_size;
             smaller_factor_ = -1;
+
+            // add cell state and category arrays
+            cell_states.clear();
+            category_assignments.clear();
+            final int array_size = size()*size();
+            for (int i = 0; i < array_size; ++i)
+            {
+                category_assignments.add(i);
+                cell_states.add(CellState.Unclaimed);
+            }
         }
         else
         {
             throw new RuntimeException("An attempt to set a non-positive board size was observed.");
         }
     }
-    public static int smaller_factor()
+    public int smaller_factor()
     {
         if (smaller_factor_ > 0)
         {
@@ -63,11 +72,11 @@ public class GameBoard {
         }
         return 1;
     }
-    public static int larger_factor()
+    public int larger_factor()
     {
         return size() / smaller_factor();
     }
-    public static int num_clusters()
+    public int num_clusters()
     {
         if (size() == 1)
         {
@@ -114,12 +123,9 @@ public class GameBoard {
     public void init_game()
     {
         // initialize all cells to unclaimed to begin
-        cell_states.clear();
-        category_assignments.clear();
         final int array_size = size()*size();
         for (int i = 0; i < array_size; ++i)
         {
-            category_assignments.add(i);
             cell_states.add(CellState.Unclaimed);
         }
         // shuffle the mapping of spatial grid onto the categorical grid
@@ -133,11 +139,14 @@ public class GameBoard {
 
     public void init_game(int new_size)
     {
-        set_size(new_size);
+        if (new_size != size())
+        {
+            set_size(new_size);
+        }
         init_game();
     }
 
-    public static boolean is_edge(int position)
+    public boolean is_edge(int position)
     {
         return (position / size() == 0) || (position / size() == size() - 1) ||
                (position % size() == 0) || (position % size() == size() - 1);

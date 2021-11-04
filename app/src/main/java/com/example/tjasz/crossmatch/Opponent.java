@@ -23,7 +23,7 @@ public class Opponent {
         {
             Log.i("DECISION", "making mistake!");
             Vector<Integer> moves = new Vector<Integer>();
-            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i) {
+            for (int i = 0; i < board.size()*board.size(); ++i) {
                 if (board.is_valid_move(i)) {
                     moves.add(i);
                 }
@@ -38,7 +38,7 @@ public class Opponent {
         {
             optimal_value = Double.POSITIVE_INFINITY;
             // iterate over the possible moves
-            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
+            for (int i = 0; i < board.size()*board.size(); ++i)
             {
                 if (board.is_valid_move(i))
                 {
@@ -58,7 +58,7 @@ public class Opponent {
         {
             optimal_value = Double.NEGATIVE_INFINITY;
             // iterate over the possible moves
-            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
+            for (int i = 0; i < board.size()*board.size(); ++i)
             {
                 if (board.is_valid_move(i))
                 {
@@ -93,7 +93,7 @@ public class Opponent {
         {
             v = Double.NEGATIVE_INFINITY;
             // iterate over the possible moves
-            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
+            for (int i = 0; i < board.size()*board.size(); ++i)
             {
                 if (board.is_valid_move(i))
                 {
@@ -113,7 +113,7 @@ public class Opponent {
         {
             v = Double.POSITIVE_INFINITY;
             // iterate over the possible moves
-            for (int i = 0; i < GameBoard.size()*GameBoard.size(); ++i)
+            for (int i = 0; i < board.size()*board.size(); ++i)
             {
                 if (board.is_valid_move(i))
                 {

@@ -53,9 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
         radio_p2_human.setChecked(!use_ai);
 
         boardsize_getter = (NumberPicker) findViewById(R.id.boardsize_getter);
-        int max_board_size = getResources().obtainTypedArray(R.array.category_colors).length();
         boardsize_getter.setMinValue(GameBoard.min_size);
-        boardsize_getter.setMaxValue(max_board_size);
+        boardsize_getter.setMaxValue(CategoryDisplay.MAX_BOARD_SIZE);
         boardsize_getter.setValue(Preferences.get_board_size(this));
         boardsize_getter.setWrapSelectorWheel(false);
         boardsize_getter.setDisplayedValues(range_to_boardsize_values(

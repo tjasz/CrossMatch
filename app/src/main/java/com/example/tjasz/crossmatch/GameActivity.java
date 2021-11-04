@@ -158,12 +158,6 @@ public class GameActivity extends AppCompatActivity {
         update_display();
     }
 
-    private int first_dim_to_color(int index)
-    {
-        TypedArray ta = getResources().obtainTypedArray(R.array.category_colors);
-        return ta.getColor(index, 0);
-    }
-
     public void update_display()
     {
         gameboard_gridview.setNumColumns(game_board.size());
@@ -202,7 +196,7 @@ public class GameActivity extends AppCompatActivity {
             }
             game_status_textview.setText(emoji + getString(R.string.last_tile) +
                     Character.toString(last_tile_char));
-            game_status_textview.setTextColor(first_dim_to_color(
+            game_status_textview.setTextColor(CategoryDisplay.first_dim_to_color(
                     game_board.get_cell_first_category(game_board.get_last_tile())));
         }
         adapter.notifyDataSetChanged();
@@ -285,7 +279,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Total number of things contained within the adapter
         public int getCount() {
-            return GameBoard.size() * GameBoard.size();
+            return mActivity.game_board.size() * mActivity.game_board.size();
         }
 
         // Require for structure, not really used in my code.
@@ -311,7 +305,7 @@ public class GameActivity extends AppCompatActivity {
             else {
                 btn = (SquareButton) convertView;
             }
-            btn.setTextColor(first_dim_to_color(
+            btn.setTextColor(CategoryDisplay.first_dim_to_color(
                     mActivity.game_board.get_cell_first_category(position)));
             btn.setText(Character.toString(CategoryDisplay.second_dim_to_char(
                     mActivity.game_board.get_cell_second_category(position))));

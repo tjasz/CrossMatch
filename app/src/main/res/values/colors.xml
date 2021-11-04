@@ -4,18 +4,4 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="background">#ffc0c0c0</color>
-
-    <array name="category_colors">
-        <item>#ffffff00</item>
-        <item>#ffff0000</item>
-        <item>#ff0000ff</item>
-
-        <item>#ff00ff00</item>
-        <item>#ffff8000</item>
-        <item>#ff8000ff</item>
-
-        <item>#ffaa6e28</item>
-        <item>#ffff00ff</item>
-        <item>#ff00ffff</item>
-    </array>
 </resources>
